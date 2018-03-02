@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>教师注册申请</title>
+</head>
+<body>
+<form name="apply" method="post" action="/index/index/doapply" enctype="multipart/form-data">
+    <label >学校<input type="text" name="school"  > </label><br>
+    <label >工号<input type="text" name="job_no"  > </label><br>
+    <label >姓名<input type="text" name="name"  > </label><br>
+    <label >身份证<input type="text" name="card_id"  ></label><br>
+    <label><input name="sex" type="radio" value="0" checked>男</label>
+    <label><input  name="sex" type="radio" value="1" />女</label><br>
+    <label >学院<input type="text" name="college"  ></label><br>
+    <label >职位<input type="text" name="job_type"  > </label><br>
+    <label >地址<input type="text" name="address"  ></label><br>
+    <label >身份证</label><input type="file" name="idcardPhoto"  id="idcardPhoto"><br>
+    <input type="hidden" name="virefy_card_id" id="virefy_card_id">
+    <label >教师证</label><input type="file" name="teacherPhoto"  id="teacherPhoto"><br>
+    <input type="hidden" name="virefy_photo" id="virefy_photo">
+    <label>验证码<input type="text" name="code" ><img src="/index/index/virefy?channel=apply" width="100"></label><br>
+    <input type="submit" value="申请审核">
+</form>
+
+<!--<form name="test" method="post" action="/index/upload/cardid" enctype="multipart/form-data">-->
+    <!--<label >身份证</label><input type="file" name="idcardPhoto"  id="idcardPhoto"><br>-->
+    <!--<input type="submit" value="测试">-->
+<!--</form>-->
+
+</body>
+</html>
