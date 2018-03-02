@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>密码找回</title>
+</head>
+<body>
+    <form name="findback" action="/index/index/dofindback" method="post">
+        <input type="hidden" name="userType" value="{$userType}">
+        <label>账号<input name="userName" type="text"  readonly = "readonly" value="{$user_no}" /></label><br>
+        <label>邮箱<input name="email" type="text"  readonly ="readonly" value="{$email}" /></label><br>
+        <label>密码<input name="password" type="password"  /></label><br>
+        <label>重复密码<input name="secondPassword" type="password"  /></label><br>
+        <label>验证码<input name="emailCode" type="text"  /></label><br>
+        <input type="submit" value="登陆" />
+    </form>
+</body>
+</html>

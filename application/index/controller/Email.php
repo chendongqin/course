@@ -12,13 +12,15 @@ use phpmailer\Exception;
 use phpmailer\SMTP;
 use ku\Verify;
 use think\Cache;
+use think\Db;
+
 class Email extends Controller{
 
     protected $_hostEmail = array(
         'email'=>'913294974@qq.com',
         'name'=>'slp课堂派',
 //        'name'=>'集美大学',
-        'password'=>'lbdwwjnstqvzbcaj'
+        'password'=>'zmffdroymnjkbbai'
     );
 
     public function index(){
@@ -47,21 +49,32 @@ class Email extends Controller{
         }
     }
 
-//    public function play(){
-//        $request = $this->request;
-//        $email = $request->param('email','','string');
-//        if(!Verify::isEmail($email)){
-//            return json(array('status'=>false,'msg'=>'邮箱格式不正确'));
-//        }
-//        $subject = '集美大学处罚通知';
-//        $body = '范进雄同学，由于你在注册时间，连续夜不归宿，扣除学分2学分，如有问题联系教学科老师:'.'13023913185';
-//        $res = $this->sendEmail($email,$subject,$body);
-//        if($res){
-//            return json(array('status'=>true,'msg'=>'发送成功'));
-//        }else{
-//            return json(array('status'=>false,'msg'=>'发送失败'));
-//        }
-//    }
+    public function findback(){
+        $email = $this->request->param('email','','string');
+        if(!Verify::isEmail($email)){
+            return json(array('status'=>false,'msg'=>'邮箱格式不正确'));
+        }
+        $user = Db::name('students')->where(array('email'=>$email))->find();
+        if(empty($user)){
+            $user = Db::name('teachers')->where(array('email'=>$email))->find();
+            if(empty($user)){
+                return json(array('status'=>false,'msg'=>'该邮箱未注册'));
+            }
+        }
+        $code = mt_rand(100000,999999);
+        $cacheRes = Cache::set('findback_'.trim($email),$code,200);
+        if(!$cacheRes){
+            return json(array('status'=>false,'msg'=>'验证码存储错误'));
+        }
+        $subject = '用户密码找回';
+        $body = '验证码：'.$code;
+        $res = $this->sendEmail($email,$subject,$body);
+        if($res){
+            return json(array('status'=>true,'msg'=>'发送成功'));
+        }else{
+            return json(array('status'=>false,'msg'=>'验证发送失败'));
+        }
+    }
 
     /**
      * 邮箱发送
@@ -75,7 +88,7 @@ class Email extends Controller{
         $mail=new PHPMailer(true);
         try{
             //邮件调试模式
-            $mail->SMTPDebug = 0;
+//            $mail->SMTPDebug = 2;
             //设置邮件使用SMTP
             $mail->isSMTP();
             // 设置邮件程序以使用SMTP

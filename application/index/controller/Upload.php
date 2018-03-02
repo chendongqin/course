@@ -39,7 +39,7 @@ class Upload extends Controller{
         return json(array('status'=>true,'fileName'=>$fileName));
     }
     //上传教师证
-    public function tearcher(){
+    public function teacher(){
         $upload = new kuUpload();
         $upload->setFormName('teacherPhoto');
         $result = $upload->exec();
