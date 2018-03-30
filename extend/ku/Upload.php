@@ -365,7 +365,7 @@ final class Upload {
         $this->_height = isset($imgInfo[1]) ? $imgInfo[1] : 0;
         $typeName = explode('.', $name);
         $shuffix = array_pop($typeName);
-        if (!in_array($type, $this->_supportResource) || !in_array(strtolower($shuffix), $this->_supportSuffix)) {
+        if (($this->_supportResource and !in_array($type, $this->_supportResource)) || ( $this->_supportSuffix and !in_array(strtolower($shuffix), $this->_supportSuffix))) {
             $this->setErrval(28104, '文件格式/文件类型不支持, 仅支持' . implode(',', $this->_supportSuffix));
             return false;
         }

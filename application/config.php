@@ -242,4 +242,11 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
+    'emailconfig'=>[
+        'email'=>'913294974@qq.com',
+        'name'=>'Sql课堂派',
+        'password'=>'zmffdroymnjkbbai'
+    ],
+
+    'myUrl'=>'http://www.course.com',
 ];

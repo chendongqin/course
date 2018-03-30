@@ -409,5 +409,22 @@ class Tool {
 //        return $image;
     }
 
+    public static function word2html($wordname,$htmlname)
+    {
+        if(!file_exists($htmlname)){
+            $word = new \COM("word.application");
+            $word->Visible = 1;
+            $word->Documents->Open($wordname);
+            $word->Documents[1]->SaveAs($htmlname,8);
+            $word->Quit();
+            $word = null;
+            unset($word);
+        }
+        $html = file_get_contents($htmlname);
+        $html = iconv("gb2312", "utf-8//IGNORE",$html);
+        $html = str_replace('src="','src="/uploads/task/',$html);
+        return $html;
+    }
+
 
 }

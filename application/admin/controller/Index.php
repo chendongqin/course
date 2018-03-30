@@ -6,14 +6,16 @@
  * Time: 22:40
  */
 namespace app\admin\controller;
+
 use think\Db;
-use ku\Tool;
 use base\Adminbase;
-//use PHPExcel\IOFactory;
-//use PHPExcel\Reader_Excel2007;
-//use PHPExcel;
+use think\Loader;
+
 
 class Index extends Adminbase{
+
+    private $_excles = array('xls','xlsx','xlsb',);
+    private $_studentClu = array('stu_no'=>'学号','school'=>'学校','name'=>'姓名','major'=>'专业','sex'=>'性别','email'=>'邮箱','class'=>'班级','idcard'=>'身份证');
 
     public function index(){
         return $this->fetch('index');
@@ -25,91 +27,64 @@ class Index extends Adminbase{
     }
 
     public function doenter(){
-        if (!empty($_FILES['studentExcel'])) {
-            $name=explode('.',$_FILES['studentExcel']['name']);
-            $lastName=$name[count($name)-1];
-//            if(strtolower($lastName) != 'csv' and strtolower($lastName) != 'xls' and strtolower($lastName) !='xlsx' and strtolower($lastName) !='xlsb'){
-//                return $this->returnData('上传文件格式必须为csv/xls/xlsx/xlsb等文件！', 28101);
-//            }
-            if(strtolower($lastName) != 'csv'){
-                return $this->returnData('上传文件格式必须为csv文件！', 28101);
-            }
-            if ($_FILES['studentExcel']['error'] > 0) {
-                return $this->error('上传错误！','/admin/index/enter');
-            } else {
-                $d = date("YymdHis");
-                $randNum = rand((int)50000000, (int)10000000000);
-                $filesname = $d . $randNum . $_FILES['studentExcel']['name'];
-                $dir = PUBLIC_PATH . '/uploads/tmp/';
-                if(!file_exists($dir)){
-                    Tool::makeDir($dir);
-                }
-                if (!copy($_FILES['studentExcel']['tmp_name'], $dir. $filesname)) {
-                    return $this->error('文件上传失败！','/admin/index/enter');
-                } else {
-                    $res = $this->intoSql($dir. $filesname);
-                    if(!$res){
-                        unlink($dir. $filesname);
-                        return $this->error('操作失败！','/admin/index/enter');
-                    }
-                    unlink($dir. $filesname);
-                    return $this->success('操作成功！','/admin/index/index');
-                }
-            }
+        $request = $this->request;
+        $fileInfo = $request ->file('studentExcel')->getInfo();
+        if (empty($fileInfo))
+            return $this->returnJson('没有文件上传！');
+        $name=explode('.',$_FILES['studentExcel']['name']);
+        $lastName=$name[count($name)-1];
+        if(!in_array(strtolower($lastName),$this->_excles))
+            return $this->returnJSon('上传文件格式必须为'.implode(',',$this->_excles));
+        if ($_FILES['studentExcel']['error'] > 0)
+            return $this->returnJson('上传错误！');
+        $basePath = PUBLIC_PATH.'/phpexcel/';
+        Loader::import('PHPExcel',$basePath);
+        Loader::import('PHPExcel/IOFactory.PHPExcel_IOFactory',$basePath);
+        $read = \PHPExcel_IOFactory::createReader('Excel2007');
+        $obj = $read->load($fileInfo['tmp_name']);
+        $dataArray =$obj->getActiveSheet()->toArray();
+        foreach ($dataArray as $key=> $item){
+            $dataArray[$key] = array_filter($item);
         }
-        else {
-            return $this->error('没有文件上传！','/admin/index/enter');
+        $datas = array_filter($dataArray);
+        $virefy = [];
+        foreach ($this->_studentClu as $key=>$clu){
+            $cluKey =  array_search($clu,$datas[0]);
+            if($cluKey === false){
+                return $this->returnJson('导入表格不包含'.$clu.'的数据');
+            }
+            $virefy[$key] = $cluKey;
         }
+        unset($datas[0]);
+        $res = true;
+        $studentModel = Db::name('students');
+        foreach ($datas as $data){
+            $add = ['create_time'=>time()];
+            foreach ($virefy as $key =>$keyName){
+                $value = isset($data[$keyName])?$data[$keyName]:'';
+                $add[$key] = $value;
+            }
+            $virefyStudentt = $studentModel
+                ->where(array('stu_no'=>$add['stu_no'],'school'=>$add['school']))
+                ->find();
+            if(!empty($virefyStudentt))
+                continue;
+            $password = substr($add['idcard'],0,15);
+            $add['password'] = sha1($password.substr($add['idcard'],-4));
+            $add['birthday'] = substr($add['idcard'],6,4).'-'.substr($add['idcard'],10,2).'-'.substr($add['idcard'],12,2);
+            $res = $res && $studentModel->insert($add);
+        }
+        if($res)
+            return $this->returnJson('导入学生数据成功',true,1);
+        return $this->returnJson('导入数据存在错误，请重试');
     }
 
-    public function intoSql($filesname)
-    {
-        if ($filesname) {
-            $name = explode('.', $filesname);
-            $lastName = $name[count($name) - 1];
-            if ($lastName === 'csv') {
-                $fp = fopen($filesname, "r");
-                $students = array();
-                while ($line = fgetcsv($fp, 0,',')) {
-                    $students['stu_no'][] = iconv('gb2312', 'utf-8', $line[0]);
-                    $students['school'][] = iconv('gb2312', 'utf-8', $line[1]);
-                    $students['name'][] = iconv('gb2312', 'utf-8', $line[2]);
-                    $students['major'][] = iconv('gb2312', 'utf-8', $line[3]);
-                    $students['sex'][] = iconv('gb2312', 'utf-8', $line[4]);
-                    $students['ID_no'][] = iconv('gb2312', 'utf-8', $line[5]);
-                }
-                //处理标题
-                foreach ($students as $key => $student){
-                    unset($students[$key][0]);
-                }
-                Db::startTrans();
-                $virefyStudents = Db::name('virefy_students');
-                foreach ($students as $student){
-                    foreach ($student as $key =>$stu_no){
-                        $data['stu_no'] = $stu_no;
-                        $data['school'] = $students['school'][$key];
-                        $virefy =$virefyStudents->where($data)->find();
-                        if(!empty($virefy)){
-                            continue;
-                        }
-                        $data['name'] = $students['name'][$key];
-                        $data['major'] = $students['major'][$key];
-                        $data['sex'] = $students['sex'][$key]=='男'?0:1;
-                        $data['ID_no'] = $students['ID_no'][$key];
-                        $res = $virefyStudents->insert($data);
-                        if(!$res){
-                            Db::rollback();
-                            return false;
-                        }
-                    }
-                    Db::commit();
-                    break;
-                }
-                return true;
-            }
-            return false;
-        }
-        return false;
+    //获取在线人数
+    public function online(){
+        $stuOnline = Db::name('students')->where('online','>=',time()-3600*2)->count();
+        $teaOnline = Db::name('teachers')->where('online','>=',time()-3600*2)->count();
+        $online = $stuOnline + $teaOnline;
+        return $this->returnJson('获取成功',true,1,['online'=>(int)$online]);
     }
 
 }

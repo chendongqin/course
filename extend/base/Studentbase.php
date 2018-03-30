@@ -8,16 +8,26 @@
 namespace base;
 use think\Controller;
 use think\Session;
-class Studentbase extends Controller{
+class Studentbase extends Base {
 
+    private $_user = [];
     protected function _initialize() {
         $session = new Session();
         $student = $session->get('student_user');
         if(empty($student)){
-//            $this->redirect('/');
-            $this->error('请先登陆','/');
+            $this->redirect('/');
         }
+        $this->setUser($student[0]);
+        $this->assign('student',$student[0]);
+    }
+    public function setUser($user){
+        $this->_user = (array)$user;
+        return $this;
     }
 
+    public function getUser()
+    {
+        return $this->_user;
+    }
 
 }

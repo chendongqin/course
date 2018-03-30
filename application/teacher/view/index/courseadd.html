@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>创建课程</title>
+</head>
+<body>
+    <form action="/teacher/index/addcourse" method="post">
+        <label>课程名字</label><input type="text" name="name" id="name"><br>
+        <label>学分</label><input type="text" name="credit" id="credit"><br>
+        <label>开始时间</label><input type="text" name="start_time" id="start_time"><br>
+        <label>结束时间</label><input type="text" name="end_time" id="end_time"><br>
+        <label>课程描述</label><textarea name="describe" id="describe"></textarea><br>
+        <input type="submit" value="创建" id="addCourse">
+    </form>
+</body>
+</html>

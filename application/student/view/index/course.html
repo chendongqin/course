@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>课程</title>
+</head>
+<body>
+{if condition="!empty($pager.data)"}
+{volist name="pager.data" id="data"}
+<a href="javascript:;">
+    <div >
+        课程名：{$data.name}—学分：{$data.credit}—教师:{$data.teacherName}<br>
+        时间：{php}echo date('Y/m/d',$data['start_time']);{/php}——{php}echo date('Y/m/d',$data['end_time']);{/php}<br>
+        描述：{$data.describe}<br>
+        {php}echo $data['join'] == 0?'<a href="javascript:;" class="joinCourse">加入课程</a>':'<a href="/student/index/coursedetail?id='.$data['Id'].'">进入课程</a>';{/php}
+    </div>
+</a>
+{/volist}
+{else}
+没有数据
+{/if}
+</body>
+</html>

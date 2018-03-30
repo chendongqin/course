@@ -1,16 +1,22 @@
 <?php
 namespace app\index\controller;
-use think\Controller;
 use think\Db;
 use ku\Tool;
 use ku\Verify;
 use think\Session;
 use think\Cache;
-class Index extends Controller
+use base\Base;
+class Index extends Base
 {
     //首页
     public function index()
     {
+        $student = Session::get('student_user')[0];
+        if(!empty($student))
+            $this->redirect('/student');
+        $teacher = Session::get('teacher_user')[0];
+        if(!empty($teacher))
+            $this->redirect('/teacher');
         return $this->fetch('index');
     }
 
@@ -19,11 +25,11 @@ class Index extends Controller
         $request = $this->request;
         $userName = $request->param('userName','','string');
         $password = $request->param('password','','string');
-        $code = strtolower($request->param('code','','string'));
+        $code = $request->param('code','','string');
         $sission = new Session();
-        $virefyCode = strtolower($sission->get('login_virefy_code'));
-        if(strcmp($virefyCode,$code)!==0){
-            return $this->error('验证码错误');
+        $virefyCode = $sission->get('login_virefy_code');
+        if(strcasecmp($virefyCode,$code)!==0){
+            return $this->returnJson('验证码错误');
         }
         $type = $request->param('type',0,'int');
         if($type === 0){
@@ -32,33 +38,54 @@ class Index extends Controller
             $userVirefy = $this->teacherLogin($userName,$password);
         }
         if($userVirefy['status'] === false){
-            return $this->error($userVirefy['msg']);
+            return $this->returnJson($userVirefy['msg']);
         }
         if($type === 0){
-            return $this->success('登陆成功','/student');
+            return $this->returnJson('登陆成功',true,1);
         }else{
-            return $this->success('登陆成功','/teacher');
+            return $this->returnJson('登陆成功',true,2);
         }
     }
 
     //学生登陆
     public function studentLogin($userName,$password){
         $where = array('stu_no'=>$userName);
-        $user = Db::name('students')->where($where)->find();
-        $password = sha1($password.substr($user['stu_no'],-4));
+        $orWhere = array('email'=>$userName);
+        $user = Db::name('students')->where($where)->whereOr($orWhere)->find();
         if(empty($user)){
             return array('status'=>false,'msg'=>'用户不存在');
         }
-        if(strcmp($user['password'],$password)!==0){
+        $password = sha1($password.substr($user['idcard'],-4));
+        if(strcasecmp($user['password'],$password)!==0){
             return array('status'=>false,'msg'=>'密码错误');
         }
+        if($user['ban']==1)
+            return  array('status'=>false,'msg'=>'用户被禁用');
         $session = new Session();
         $session->push('student_user',$user);
+        $login = ['Id'=>$user['Id'],'login_time'=>time(),'online'=>time()];
+        Db::name('students')->update($login);
         return array('status'=>true,'msg'=>'登陆成功');
     }
     //教师登陆
     public function teacherLogin($userName,$password){
-
+        $where = array('job_no'=>$userName);
+        $orWhere = array('email'=>$userName);
+        $user = Db::name('teachers')->where($where)->whereOr($orWhere)->find();
+        if(empty($user)){
+            return array('status'=>false,'msg'=>'用户不存在');
+        }
+        $password = sha1($password.substr($user['idcard'],-4));
+        if(strcasecmp($user['password'],$password)!==0){
+            return array('status'=>false,'msg'=>'密码错误');
+        }
+        if($user['ban']==1)
+            return  array('status'=>false,'msg'=>'用户被禁用');
+        $session = new Session();
+        $session->push('teacher_user',$user);
+        $login = ['Id'=>$user['Id'],'login_time'=>time(),'online'=>time()];
+        Db::name('teachers')->update($login);
+        return array('status'=>true,'msg'=>'登陆成功');
     }
 
     //验证码
@@ -75,84 +102,6 @@ class Index extends Controller
     public function apply(){
         return $this->fetch('apply');
     }
-    //学生注册执行
-    public function doregist(){
-        $request = $this->request;
-        $code = strtolower($request->param('code','','string'));
-        if(empty($code)){
-            return $this->error('验证码不能为空');
-        }
-        $session = new Session();
-        $virefyCode = strtolower($session->get('regist_virefy_code'));
-        if(!$virefyCode){
-            return $this->error('验证码系统错误');
-        }
-        if($virefyCode!=$code){
-            return $this->error('验证码不正确');
-        }
-        $email = $request->param('email','','string');
-        $emailCode = $request->param('emailCode','','string');
-        if(empty($emailCode)){
-            return $this->error('邮箱验证码不为空');
-        }
-        $virefyEmailCode = Cache::get($email);
-        if($virefyEmailCode===false){
-            return $this->error('请发送邮箱验证码');
-        }
-        if(strcasecmp($emailCode,$virefyEmailCode)!==0){
-            return $this->error('邮箱验证码不匹配');
-        }
-        $virefyExist1 = Db::name('students')->where(array('email'=>$email))->find();
-        $virefyExist2 = Db::name('teachers')->where(array('email'=>$email))->find();
-        if(!empty($virefyExist1) or !empty($virefyExist2)){
-            return $this->error('该邮箱已注册');
-        }
-        $school = $request->param('school','','string');
-        $stuNo = $request->param('stu_no','','string');
-        $virefy = array('school'=>$school,'stu_no'=>$stuNo);
-        $virefyRes = Db::name('virefy_students')->where($virefy)->find();
-        if(empty($virefyRes)){
-            return $this->error('该校此学号未审核通过，重新输入或联系管理员');
-        }
-        $virefyExist = Db::name('students')->where(array('stu_no'=>$stuNo,'school'=>$school))->find();
-        if(!empty($virefyExist)){
-            return $this->error('该学生已注册');
-        }
-        $password = $request->param('password','','string');
-        if(strlen($password)<6){
-            return $this->error('密码长度需要大于6位');
-        }
-        $secondPwd = $request->param('secondPwd','','string');
-        if($password!=$secondPwd){
-            return $this->error('两次输入密码不正确');
-        }
-        $college = $request->param('college','','string');
-        $class = $request->param('class','','string');
-        $address = $request->param('address','','string');
-        $data = $virefy;
-        $data['stu_no'] = $stuNo;
-        $data['school'] = $school;
-        $data['name'] = $virefyRes['name'];
-        $data['password'] = sha1($password.substr($stuNo,-4));
-        $data['sex'] = $virefyRes['sex'];
-        $data['birthday'] = substr($virefyRes['ID_no'],6,4).'-'.substr($virefyRes['ID_no'],10,2).'-'.substr($virefyRes['ID_no'],12,2);
-        $data['major'] = $virefyRes['major'];
-        $data['college'] = $college;
-        $data['class'] = $class;
-        $data['address'] = $address;
-        $data['create_time'] = time();
-        $data['update_time'] = time();
-        $data['email'] = $email;
-        $res = Db::name('students')->insert($data);
-        if(!$res){
-            return $this->error('注册失败，请重试！');
-        }
-        Cache::rm($email);
-        $session = new Session();
-        $user = Db::name('students')->where(array('stu_no'=>$stuNo))->find();
-        $session->push('student_user',$user);
-        return $this->success('注册成功','/student/');
-    }
 
     //教师注册
     public function doapply(){
@@ -160,7 +109,7 @@ class Index extends Controller
         $data['school'] = $request->param('school','','string');
         $data['job_no'] = $request->param('job_no','','string');
         $data['name'] = $request->param('name','','string');
-        $data['card_id'] = $request->param('card_id','','string');
+        $data['idcard'] = $request->param('card_id','','string');
         $data['sex'] = $request->param('sex','','string');
         $data['college'] = $request->param('college','','string');
         $data['job_type'] = $request->param('job_type','','string');
@@ -171,34 +120,34 @@ class Index extends Controller
         $code = $request->param('code','','string');
         $emailCode = $request->param('emailCode','','string');
         if(empty($code)){
-            return $this->error('验证码不能为空');
+            return $this->returnJson('验证码不能为空');
         }
         $session = new Session();
         $virefyCode = $session->get('apply_virefy_code');
         if(!$virefyCode){
-            return $this->error('验证码系统错误');
+            return $this->returnJson('验证码系统错误');
         }
         if(strcasecmp($virefyCode,$code)!==0){
-            return $this->error('验证码不正确');
+            return $this->returnJson('验证码不正确');
         }
         if(empty($emailCode)){
-            return $this->error('邮箱验证码不为空');
+            return $this->returnJson('邮箱验证码不为空');
         }
         $virefyEmailCode = Cache::get($data['email']);
         if($virefyEmailCode===false){
-            return $this->error('请发送邮箱验证码');
+            return $this->returnJson('请发送邮箱验证码');
         }
         if(strcasecmp($emailCode,$virefyEmailCode)!==0){
-            return $this->error('邮箱验证码不匹配');
+            return $this->returnJson('邮箱验证码不匹配');
         }
         $teacherVirefy = Db::name('virefy_teacher');
         $res = $teacherVirefy->insert($data);
         if(!$res){
             unlink(PUBLIC_PATH.$data['virefy_card_id']);//删除不成功文件
             unlink(PUBLIC_PATH.$data['virefy_photo']);//删除不成功文件
-            return $this->error('注册失败');
+            return $this->returnJson('注册失败');
         }
-        return $this->success('申请成功','/');
+        return $this->returnJson('申请成功',true,1);
     }
 
     public function forget(){
@@ -235,11 +184,11 @@ class Index extends Controller
         $userType = (int)$request->param('userType','','int');
         $code = $request->param('emailCode','','string');
         if(empty($code)){
-            return $this->error('邮箱验证码不能为空');
+            return $this->returnJson('邮箱验证码不能为空');
         }
         $virefy = Cache::get('findback_'.trim($email));
         if(strcasecmp($virefy,$code)!==0){
-            return $this->error('邮箱验证不正确');
+            return $this->returnJson('邮箱验证不正确');
         }
         $where = array('email'=>$email);
         if(strcmp($password,$secondPassword)!==0){
@@ -253,9 +202,9 @@ class Index extends Controller
             $res = $this->updatePasswordOfTeacher($where,$password);
         }
         if($res['status'] === false){
-            return $this->error($res['msg']);
+            return $this->returnJson($res['msg']);
         }
-        return $this->success($res['msg'],'/');
+        return $this->returnJson($res['msg'],true,1);
 
     }
 
@@ -265,7 +214,7 @@ class Index extends Controller
         if(empty($user)){
             return array('status'=>false,'msg'=>'用户信息不存在');
         }
-        $password =sha1($password.substr($user['stu_no'],-4));
+        $password =sha1($password.substr($user['idcard'],-4));
         $upData = array('Id'=>$user['Id'],'password'=>$password);
         $res = $userModel->update($upData);
         if(!$res){
@@ -280,7 +229,7 @@ class Index extends Controller
         if(empty($user)){
             return array('status'=>false,'msg'=>'用户信息不存在');
         }
-        $password = sha1($password.substr($user['stu_no'],-4));
+        $password = sha1($password.substr($user['job_no'],-4));
         $upData = array('Id'=>$user['Id'],'password'=>$password);
         $res = $userModel->update($upData);
         if(!$res){
@@ -297,18 +246,23 @@ class Index extends Controller
         switch ($channel){
             //学生登出
             case 'student':
+                $user = Session::get('student_user');
+                $user = isset($user[0])?$user[0]:['Id'=>0];
                 $sission->delete('student_user');
-                $this->success('登出成功','/');
+                Db::name('students')->update(['Id'=>$user['Id'],'online'=>time()-2*3600]);
+                $this->redirect('/');
                 break;
             //教师登出
             case 'teacher':
+                $user = Session::get('teacher_user');
+                $user = isset($user[0])?$user[0]:['Id'=>0];
                 $sission->delete('teacher_user');
-                $this->success('登出成功','/');
+                Db::name('teachers')->update(['Id'=>$user['Id'],'online'=>time()-2*3600]);
+                $this->redirect('/');
                 break;
             default:
                 break;
         }
     }
-
 
 }

@@ -5,8 +5,8 @@ $(function () {
        $.post('/index/email/findback',data,function (json) {
            if(json.status===true){
                window.location.href = '/index/index/findback?email='+email;
-           }else{alert(
-               json.msg);
+           }else{
+               alert(json.msg);
            }
        })
    })

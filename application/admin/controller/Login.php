@@ -38,12 +38,12 @@ class Login extends Adminbase{
             return $this->error('密码不正确');
         }
         $sission->push('admin_user',$admin);
-        $this->success('登陆成功','/admin');
+        $this->redirect('/admin');
     }
     //退出登陆
     public function logout(){
         $sission = new Session();
         $sission->delete('admin_user');
-        return $this->success('登出成功','/admin/login');
+        return $this->redirect('/admin/login');
     }
 }

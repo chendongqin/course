@@ -8,7 +8,7 @@
 namespace base;
 use think\Controller;
 use think\Session;
-class Adminbase extends Controller{
+class Adminbase extends Base {
     protected $_ec = array(
         'login',
     );
@@ -20,7 +20,7 @@ class Adminbase extends Controller{
             $session = new Session();
             $admin = $session->get('admin_user');
             if(empty($admin)){
-                $this->error('请先登陆','/admin/login');
+                $this->redirect('/admin/login');
             }
         }
     }

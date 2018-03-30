@@ -2,9 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>主页</title>
+    <title>个人中心</title>
 </head>
 <body>
 <a href="/index/index/logout?channel=student">登出</a>
+<form method="post" action="/student/upload/task" enctype="multipart/form-data">
+    文件：<input type="file" name="task">
+    <input type="submit" value="提交">
+</form>
 </body>
 </html>
