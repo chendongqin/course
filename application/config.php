@@ -243,9 +243,9 @@ return [
         'list_rows' => 15,
     ],
     'emailconfig'=>[
-        'email'=>'913294974@qq.com',
+        'email'=>'775906291@qq.com',
         'name'=>'Sql课堂派',
-        'password'=>'zmffdroymnjkbbai'
+        'password'=>'nfajzpyxhmbcbfji'
     ],
 
     'myUrl'=>'http://www.course.com',

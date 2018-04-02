@@ -26,7 +26,7 @@ class Email{
         $mail=new PHPMailer(true);
         try{
             //邮件调试模式
-//            $mail->SMTPDebug = 2;
+        //    $mail->SMTPDebug = 2;
             //设置邮件使用SMTP
             $mail->isSMTP();
             // 设置邮件程序以使用SMTP

@@ -5,19 +5,32 @@
     <title>登陆</title>
     {load href="/static/js/jq.js" /}
     {load href="/static/js/index/index/index.js" /}
+    {load href="/static/css/form.css"/}
+    {load href="/static/css/img.css"/}
+    {load href="/static/css/label.css"/}
+
+
+
+    <link rel="stylesheet" href="css/img.css">
 </head>
 <body>
 
-    <form action="/index/index/login" method="post">
-        <label>账号<input name="userName" type="text" /></label><br>
-        <label>密码<input name="password" type="password" /></label><br>
-        <label>验证码<input type="text" name="code" ><img src="/index/index/virefy?channel=login" width="100" id="codeImg"><a href="javascript:;"  id="changeCode" >看不清换一张</a></label><br>
+    <form  method="post" id="loginForm">
+        <img id="logoImg"src="/static/image/logo.jpg" alt="集美大学诚毅学院"><br>
+        <div class="outer">
+
+        <label>账号<input name="userName" id="userName" type="text" /></label><br>
+        <label>密码<input name="password" id="password" type="password" /></label><br>
+        <label>验证码<input type="text" id="code" name="code" ><img src="/index/index/virefy?channel=login" width="100" id="codeImg"><a href="javascript:;"  id="changeCode" >看不清换一张</a></label><br>
         <label><input name="type" type="radio" value="0" checked>学生登陆</label>
         <label><input  name="type" type="radio" value="1" />老师登陆</label><br>
-        <input type="submit" value="登陆" /><a href="/index/index/forget">忘记密码</a>
-    </form>
-    <br>
-    <a href="/index/index/regist">学生注册</a>
+        <input type="button" id="login" value="登陆" /><a href="/index/index/forget">忘记密码</a>
+        </div>
+
     <a href="/index/index/apply">教师注册</a>
+        
+    </form>
+   
+    
 </body>
 </html>

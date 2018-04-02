@@ -1,14 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>个人中心</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>首页</title>
+    {load href="/static/css/s_index.css"/}
+    {load href="/static/css/s_nav.css"/}
+    {load href="/static/js/jq.js"/}
+    {load href="/static/js/student/index.js"/}
+
 </head>
+
 <body>
-<a href="/index/index/logout?channel=student">登出</a>
-<form method="post" action="/student/upload/task" enctype="multipart/form-data">
-    文件：<input type="file" name="task">
-    <input type="submit" value="提交">
-</form>
+    <div class="container">
+        <header>
+            <nav>
+                <span class="nav_bth nav_bth_first">
+                    <img src="/static/image/logo.jpg" alt="logo">
+                </span>
+                <span class="nav_bth"><a href="/student">首页</a></span>
+                <span class="nav_bth"><a href="/student/index/mycourse">我的课程</a></span>
+                <span class="nav_bth"><a href="/student/index/course">课程列表</a></span>
+                <span class="nav_bth">修改密码</span>
+                <a class="nav_bth" href="/index/index/logout?channel=student">登出</a>
+            </nav>
+
+        </header>
+        <main>
+            <section class="main_img ">
+                <img src="/static/image/header.jpg" alt="学院全景图">
+            </section>
+            <section class="main_sec" id="main_top">
+                <div class="sec_top_left div_border">
+                    <span class="top_title">
+                        <h4>个人中心</h4>
+                        <p>MORE
+                            <<</p>
+                    </span>
+                    <div class="person">
+                        <img src="/static/image/css.jpg" alt="头像">
+                        <div class="person_text">
+                            <p>欢迎您~</p>
+                            <p>{$student.name}</p>
+                            <p>{$student.stu_no}</p>
+                            <p>{$student.class}</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="sec_top_center div_border">
+                    <span class="top_title">
+                        <h4>资源中心</h4>
+                        <p>MORE
+                            <<</p>
+                    </span>
+                    <div class="top_center_big">
+                        <div class="top_center_left">
+                            <h4>已加入课程：</h4>
+                            {if condition="!empty($mycourse)"}
+                            {volist name="mycourse" id="data"}
+                                <p>{$data.name}</p>
+                            {/volist}
+                            {else}
+                            <p><a href="/student/index/course">前去选课</a></p>
+                            {/if}
+                        </div>
+                        <div class="top_center_right">
+                            {if condition="!empty($origin)"}
+                            {volist name="origin" id="data"}
+                            <div class="center_right">
+                                <span class="squrt_center "></span>
+                                <p>{$data.name}</p>
+                                <p>{php}echo date('Y-m-d',$data['create_time']){/php}</p>
+                                <p><a href="/student/resource/downpOrigin?id={$data.Id}">下载</a></p>
+                            </div>
+                            {/volist}
+                            {else}
+                            <p>没有数据</p>
+                            {/if}
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="sec_top_right div_border">
+                    <span class="top_title">
+                        <h4>通知</h4>
+                        <p>MORE
+                            <<</p>
+                    </span>
+                    <div class="right_scroll">
+
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+                        <div class="right_text">
+                            <span class="squrt"></span>
+                            <p>[java]关于2018年4月28日上午10....</p>
+                        </div>
+
+
+
+
+
+                    </div>
+                </div>
+            </section>
+            <section id="main_bottom">
+                <span class="top_title">
+                    <h4>推荐课程</h4>
+                    <p>MORE
+                        <<</p>
+                </span>
+                <div class="ul_top">
+                    <h4><a href="javascript:;" id="changeGroom">换一批</a></h4>
+                </div>
+                <div class="groomCourse">
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
+
 </html>

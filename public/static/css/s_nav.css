@@ -1,0 +1,31 @@
+nav {
+    display: flex;
+    justify-content: space-around;
+    width: 1200px;
+    height: 80px;
+    line-height: 80px; 
+    border: solid 5px rgb(167, 220, 255);
+    border-bottom: none;
+   
+    /* border: solid 1px rgb(167, 220, 255); */
+}
+
+.nav_bth {
+    width: 100px;
+    height:80px;
+    line-height: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
+.nav_bth_first{
+    height:75px;
+    line-height: 80px;
+}
+.nav_bth_first img{
+    width: 80px;
+    height: 70px;
+}

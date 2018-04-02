@@ -56,6 +56,9 @@ class Index extends Teacherbase{
         $add['credit'] = $request->param('credit','','string');
         if(!is_numeric($add['credit']))
             return $this->returnJson('学分数据不正确');
+        $add['image'] = $request->param('image','','string');
+        if(!empty($add['image']) and !file_exists(PUBLIC_PATH.$add['image']))
+            return $this->returnJson('图片不存在');
         $add['start_time'] = strtotime($request->param('start_time','','string'));
         $add['end_time'] = strtotime($request->param('end_time','','string'));
         if($add['start_time'] >$add['end_time'])

@@ -1,0 +1,307 @@
+*{box-sizing: border-box;}
+html,
+body,
+ul,
+li,
+h4,
+p{
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+}
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+
+
+main{
+    width: 1200px;
+    border: solid 5px rgb(167, 220, 255);
+    position: relative;
+    border-top: none;
+}
+
+.main_img img{
+    height:300px;
+    width: 1192px;
+}
+.main_sec{
+    width: 1200px;
+    height: 230px;
+    padding-right: 8px;
+    /* border: solid 1px firebrick; */
+    display: flex;
+    justify-content: space-between;
+    
+}
+.nav_bth:hover{
+    background-color:  rgb(167, 220, 255);
+    color: white;
+}
+
+.div_border{
+    border: solid 2px rgb(204, 203, 203);
+}
+
+.top_title{
+    display: block;
+    width: 100%;
+    height: 30px;
+    padding: 5px 15px 5px 10px;
+    line-height: 25px;
+    border-bottom: 1px dotted rgb(167, 220, 255);
+}
+.top_title h4{
+    color: rgb(167, 220, 255);
+    display: inline-block;
+    float: left;
+}
+.top_title p{
+    color: gold;
+    display: inline-block;
+    float: right;
+}
+
+
+
+
+.sec_top_left{
+    width: 260px;
+    height: 230px;
+}
+
+.person{
+    width: 270px;
+    height: 190px;
+    /* border: solid 1px firebrick; */
+    text-align: center;
+}
+.person img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+.person p{
+    font-size: 10px;
+    margin: 5px auto;
+}
+
+
+
+.sec_top_center{
+    width: 590px;
+    height: 230px;
+
+}
+.top_center_big{
+    width: 590px;
+    height: 200px;
+    /* border: solid 2px gold; */
+}
+.top_center_left{
+    float: left;
+    height: 200px;
+    width: 160px;
+    border-right: dotted 1px rgb(167, 220, 255);
+    text-align: center;
+}
+.top_center_left h4{
+    text-align: left;
+    padding: 10px 10px;
+}
+.top_center_left p{
+    display: block;
+    width: 80px;
+    background-color: rgb(167, 220, 255);
+    color: white;
+    margin: 10px auto;
+}
+
+.top_center_right{
+    width: 430px;
+    height: 200px;
+    /* border: solid 1px gold; */
+    float: right;
+    overflow: auto;
+}
+.center_right{
+    width: 430px;
+    height: 40px;
+    padding: 5px 10px;
+    line-height: 40px;
+
+}
+.squrt_center{
+    width: 8px;
+    height: 8px;
+    background-color: rgb(167, 220, 255);
+    border-radius: 10%;
+    display: inline-block;
+    border-radius: 50%;
+    float: left;
+    margin-top: 16px;
+}
+.top_center_right p{
+    display: inline-block;
+    line-height: 30px;
+    margin-left: 10px;
+    font-size: 15px;
+}
+.top_center_right p:nth-of-type(2){
+    float: right;
+    padding-right: 20px;
+    font-size: 12px;
+    margin-top: 5px;
+    color: rgb(184, 183, 183);
+}
+
+
+.sec_top_right{
+    width: 270px;
+    height: 230px; 
+   
+}
+.right_text{
+    width: 270px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+}
+.squrt{
+    width: 8px;
+    height: 8px;
+    background-color: gold;
+    border-radius: 10%;
+    display: inline-block;
+    border-radius: 50%;
+}
+.right_text p{
+    font-size: 12px;
+    display: inline-block;
+}
+.right_scroll{
+    overflow: auto;
+    width: 270px;
+    height: 190px;
+    padding-top: 10px;
+}
+
+ #main_bottom{
+    margin-top: 20px;
+    padding: 5px;
+    width: 1190px;
+    height: 320px;
+    border-top: solid 1px rgb(204, 203, 203);
+
+} 
+#main_bottom ul{
+    width: 1180px;
+    height: 235px;
+    padding: 5px;
+    display: flex;
+    /* border: solid 2px darkblue; */
+    justify-content: space-around;
+}
+.ul_top{
+    width: 1180px;
+    height: 20px;
+    margin: 5px 10px;
+   
+}
+.ul_top h4{
+    margin-left: 25px;
+    display: inline-block;
+    width: 70px;
+    background-color: rgb(167, 220, 255);
+    color: white;
+    height: 22px;
+    line-height: 22px;
+    text-align: center;
+    border-radius: 7px;
+}
+.course{
+    list-style: none;
+    width: 200px;
+    height: 230px;
+    border: solid 1px rgb(204, 203, 203);
+  
+    
+}
+.course_img{
+    width: 200px;
+    height: 170px;
+    /* border: solid 1px gainsboro; */
+}
+.course_img img{
+    width: 100%;
+    height: 100%;
+}
+.text{
+    width: 200px;
+    height: 60px;
+}
+.text span{
+    display: block;
+    width: 180px;
+    padding:  5px 10px; 
+    height: 20px;
+    height: 20px;
+    line-height: 20px;
+    margin: 4px auto;
+}
+.span_one h4{
+    color: rgb(66, 179, 255);
+    display: inline-block;
+    float: left;
+}
+.span_one h4{
+    color: rgb(66, 179, 255);
+    display: inline-block;
+    float: left;
+}
+.span_one p{
+    color: rgb(187, 186, 186);
+    display: inline-block;
+    float: right;
+    font-size: 0.7em;
+
+}
+.span_two p:nth-child(1){
+    background-color: rgb(108, 243, 108);
+    color: white;
+    font-size: 0.7em;
+    float: left;
+    width: 65px;
+    text-align: center;
+    border-radius: 7px;
+}
+.span_two p:nth-of-type(2){
+    color: rgb(66, 179, 255);
+    font-size:5px;
+    float: right;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

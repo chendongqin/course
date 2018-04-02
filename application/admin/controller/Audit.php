@@ -56,6 +56,4 @@ class Audit extends Adminbase{
         $this->returnJson('审核失败');
     }
 
-    
-
 }

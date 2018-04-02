@@ -57,6 +57,7 @@ class Resource extends Studentbase{
         return $this->fetch();
     }
 
+    //下载课件
     public function down(){
         $Id = $this->request->param('id','','int');
         $ware = Db::name('courseware')->where('Id',$Id)->find();
@@ -85,6 +86,7 @@ class Resource extends Studentbase{
         exit();
     }
 
+    //资源下载
     public function downorigin(){
         $Id = $this->request->param('id','','int');
         $origin = Db::name('origin')->where('Id',$Id)->find();
@@ -98,6 +100,27 @@ class Resource extends Studentbase{
             ->find();
         if(empty($courseStudent)){
             $this->assign('error','您没有加入该课程，无法下载');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+        if(!is_file(PUBLIC_PATH.$origin['thumb'])) {
+            $this->assign('error','文件不存在');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+        $fileArr = explode('.',$origin['thumb']);
+        $type = end($fileArr);
+        header('Content-Type:application/'.$type);
+        header('Content-Disposition:attachment;filename='.$origin['name'].'.'.$type);
+        header('Cache-Control:max-age=0');
+        readfile(PUBLIC_PATH.$origin['thumb']);
+        exit();
+    }
+
+    //下载公共资源
+    public function downpOrigin(){
+        $Id = $this->request->param('id','','int');
+        $origin = Db::name('public_origin')->where('Id',$Id)->find();
+        if(empty($origin)){
+            $this->assign('error','课件不存在');
             return $this->fetch(APP_PATH.'index/view/index/error.html');
         }
         if(!is_file(PUBLIC_PATH.$origin['thumb'])) {

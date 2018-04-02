@@ -1,0 +1,10 @@
+/* label{
+    height: 30px;
+    display: inline-block;
+} */
+label{
+    height: 30px;
+    display: inline-block;
+    line-height: 30px;
+}
+

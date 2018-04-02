@@ -5,11 +5,20 @@
     <title>忘记密码</title>
     {load href="/static/js/jq.js" /}
     {load href="/static/js/index/index/forget.js" /}
+    {load href="/static/css/form.css"/}
+    {load href="/static/css/img.css"/}
+    {load href="/static/css/label.css"/}
+
+
 </head>
 <body>
     <form name="forget"  >
+            <img id="logoImg"src="/static/image/logo.jpg" alt="集美大学诚毅学院"><br>
+
+            <div class="outer">
         <label>注册邮箱<input type="text" name="registEmail" id="registEmail"/></label><br/>
         <input type="button" value="发送验证" id="forgetSend">
+        </div>
     </form>
 </body>
 </html>

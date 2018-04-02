@@ -5,9 +5,24 @@
     <title>教师注册申请</title>
     {load href="/static/js/jq.js" /}
     {load href="/static/js/index/index/apply.js" /}
+    {load href="/static/css/form.css"/}
+    {load href="/static/css/img.css"/}
+    {load href="/static/css/label.css"/}
+
+    
+    
+    
+    
+    <style>
+      
+
+    </style>
 </head>
 <body>
 <form name="apply" method="post" action="/index/index/doapply" enctype="multipart/form-data">
+    <img id="logoImg"src="/static/image/logo.jpg" alt="集美大学诚毅学院">
+
+    <div class="outer">
     <label >学校<input type="text" name="school"  > </label><br>
     <label >工号<input type="text" name="job_no"  > </label><br>
     <label >姓名<input type="text" name="name"  > </label><br>
@@ -19,12 +34,13 @@
     <label >邮箱<input type="text" name="email"  id="email"> </label><a href="javascript:;" class="btn" id="sendEmailCode" >发送验证</a><br>
     <label >邮箱验证码<input type="text" name="emailCode" > </label><br>
     <label >地址<input type="text" name="address"  ></label><br>
-    <label >身份证</label><input type="file" name="idcardPhoto"  id="idcardPhoto"><br /><img src="" width="100" id="idcardImg"><br>
+    <label >身份证</label><input type="file" name="idcardPhoto"  id="idcardPhoto"><br><img src="" width="100" id="idcardImg"><br>
     <input type="hidden" name="virefy_card_id" id="virefy_card_id">
-    <label >教师证</label><input type="file" name="teacherPhoto"  id="teacherPhoto"><br/><img src="" width="100" id="teacherImg"><br>
+    <label >教师证</label><input type="file" name="teacherPhoto"  id="teacherPhoto"><br><img src="" width="100" id="teacherImg"><br>
     <input type="hidden" name="virefy_photo" id="virefy_photo">
-    <label>验证码<input type="text" name="code" ><img src="/index/index/virefy?channel=apply" width="100" id="codeImg"><a href="javascript:;"  id="changeCode" >看不清换一张</a></label><br>
+    <label>验证码<input type="text" name="code" ><br><img src="/index/index/virefy?channel=apply" width="100" id="codeImg"><a href="javascript:;"  id="changeCode" >看不清换一张</a></label><br>
     <input type="submit" value="申请审核">
+</div>
 </form>
 
 

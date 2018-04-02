@@ -11,7 +11,16 @@ use think\Db;
 class Index extends Studentbase{
 
     public function index(){
-        echo 'welcome!';
+        $user =$this->getUser();
+        $pubOrigin  = Db::name('public_origin')->order('create_time','desc')->limit(10)->select();
+        $this->assign('origin',$pubOrigin);
+        $courseStudents = Db::name('course_students')->where('stu_id',$user['Id'])->select();
+        $mycourse = [];
+        foreach ($courseStudents as $courseStudent){
+            $course = Db::name('courses')->where('Id',$courseStudent['course_id'])->find();
+            $mycourse[] = $course;
+        }
+        $this->assign('mycourse',$mycourse);
         return $this->fetch('index');
     }
 
@@ -98,7 +107,9 @@ class Index extends Studentbase{
         $courseModel = Db::name('courses');
         foreach($courseStudents['data'] as $key=>$courseStudent){
             $course = $courseModel->where('Id',$courseStudent['course_id'])->find();
+            $teacher = Db::name('teachers')->where('Id',$course['teacher_id'])->find();
             $courseStudents['data'][$key]['course'] = $course;
+            $courseStudents['data'][$key]['teacher'] = $teacher;
         }
         $this->assign('pager',$courseStudents);
         return $this->fetch();
@@ -117,7 +128,7 @@ class Index extends Studentbase{
         }
         $course = Db::name('courses')->where('Id',$courseId)->find();
         $this->assign('course',$course);
-        $teacher = Db::name('teacher')->where('Id',$course['teacher_id'])->find();
+        $teacher = Db::name('teachers')->where('Id',$course['teacher_id'])->find();
         $this->assign('teacher',$teacher);
         $courseStudents = $courseStuModel
             ->where('course_id',$courseId)
@@ -259,4 +270,27 @@ class Index extends Studentbase{
         Session::delete('student_user');
         return $this->returnJson('修改成功',true,1);
     }
+
+    public function groom(){
+        $user =$this->getUser();
+        $courseId = Db::name('course_students')->where('stu_id',$user['Id'])->column('course_id');
+        $Ids = Db::name('courses')->where('Id','not in',$courseId)->column('Id');
+        $max = count($Ids);
+        if($max === 0)
+            return $this->returnJson('没有推荐课程');
+        $imax = $max < 5? $max:5;
+        $in = array();
+        shuffle($Ids);
+        for ($i=0;$i<$imax;$i++){
+            $in[] = $Ids[$i];
+        }
+        $courses = Db::name('courses')->where('Id','in',$in)->select();
+        foreach ($courses as $key =>$course){
+            $teacherName = Db::name('teachers')->where('Id',$course['teacher_id'])->column('name');
+            $courses[$key]['teacher_name'] = $teacherName;
+        }
+        return $this->returnJson('获取成功',true,1,$courses);
+    }
+
+
 }

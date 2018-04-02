@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>创建课程</title>
+    {load href="/static/js/jq.js" /}
+    {load href="/static/js/teacher/index/course_add.js"/}
 </head>
 <body>
     <form action="/teacher/index/addcourse" method="post">
         <label>课程名字</label><input type="text" name="name" id="name"><br>
+        <label >课程图片</label><input type="file" name="courseImage"  id="courseImage"><br><img src="" width="100" id="courseImg"><br>
+        <input type="hidden" name="image" id="image">
         <label>学分</label><input type="text" name="credit" id="credit"><br>
         <label>开始时间</label><input type="text" name="start_time" id="start_time"><br>
         <label>结束时间</label><input type="text" name="end_time" id="end_time"><br>

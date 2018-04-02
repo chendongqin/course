@@ -6,9 +6,18 @@
     <!--<script type="text/javascript" src="/static/js/jq.js"></script>-->
     {load href="/static/js/jq.js" /}
     {load href="/static/js/index/index/regist.js" /}
+    {load href="/static/css/form.css"/}
+    {load href="/static/css/img.css"/}
+    {load href="/static/css/label.css"/}
+
+    
 </head>
 <body>
     <form name="regist" method="post" action="/index/index/doregist">
+        <img id="logoImg"src="/static/image/logo.jpg" alt="集美大学诚毅学院"><br>
+        <div class="outer">
+
+
         <label >学校<input type="text" name="school"  > </label><br>
         <label >学号<input type="text" name="stu_no"  > </label><br>
         <label >邮箱<input type="text" name="email"  id="email"> </label><a href="javascript:;" class="btn" id="sendEmailCode" >发送验证</a><br>
@@ -17,6 +26,7 @@
         <label >确认密码<input type="password" name="secondPwd"> </label><br>
         <label>验证码<input type="text" name="code" ><img src="/index/index/virefy?channel=regist" width="100" id="codeImg"><a href="javascript:;"  id="changeCode" >看不清换一张</a></label><br>
         <input type="submit" value="注册">
+    </div>
     </form>
 
 

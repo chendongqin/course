@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>密码找回</title>
+    {load href="/static/css/form.css"/}
+    {load href="/static/css/img.css"/}
+    {load href="/static/css/label.css"/}
+
+
+
 </head>
 <body>
+    <!-- 模块名，控制器，方法 -->
     <form name="findback" action="/index/index/dofindback" method="post">
+        <img id="logoImg"src="/static/image/logo.jpg" alt="集美大学诚毅学院"><br>
+        <div class="outer">
+
         <input type="hidden" name="userType" value="{$userType}">
         <label>账号<input name="userName" type="text"  readonly = "readonly" value="{$user_no}" /></label><br>
         <label>邮箱<input name="email" type="text"  readonly ="readonly" value="{$email}" /></label><br>
@@ -13,6 +23,7 @@
         <label>重复密码<input name="secondPassword" type="password"  /></label><br>
         <label>验证码<input name="emailCode" type="text"  /></label><br>
         <input type="submit" value="登陆" />
+        </div>
     </form>
 </body>
 </html>

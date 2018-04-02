@@ -10,6 +10,7 @@ namespace app\teacher\controller;
 use base\Teacherbase;
 use ku\Upload as kuUpload;
 use ku\Pdf;
+use ku\Tool;
 
 class Upload extends Teacherbase{
 
@@ -78,7 +79,28 @@ class Upload extends Teacherbase{
         return $this->returnJson('上传成功',true,1,['fileName'=>$file]);
     }
 
-
+    public function courseImage(){
+        $upload = new kuUpload();
+        $upload->setFormName('courseImage');
+        $result = $upload->exec();
+        if(!$result){
+            return false;
+        }
+        $path = $upload->path('/uploads/teacher/courseimg/');
+        $upload->buildCode();
+        $code = $upload->getRetval();
+        $fileName = $path.$code['code'].'.'.$upload->getFileSuffix();
+        $result = $upload->moveFile($fileName);
+        if(!$result){
+            return false;
+        }
+        $res = Tool::uploadImage($fileName,$fileName);
+        if(!$res){
+            return json(array('status'=>false,'fileName'=>''));
+        }
+        $fileName = str_replace(PUBLIC_PATH,'',$fileName);
+        return json(array('status'=>true,'fileName'=>$fileName));
+    }
 
 
 }

@@ -10,6 +10,7 @@ namespace app\admin\controller;
 use think\Db;
 use base\Adminbase;
 use think\Loader;
+use ku\Upload;
 
 
 class Index extends Adminbase{
@@ -85,6 +86,43 @@ class Index extends Adminbase{
         $teaOnline = Db::name('teachers')->where('online','>=',time()-3600*2)->count();
         $online = $stuOnline + $teaOnline;
         return $this->returnJson('获取成功',true,1,['online'=>(int)$online]);
+    }
+
+    public function addorigin(){
+        return $this->fetch();
+    }
+
+    public  function doOrigin(){
+        $upload = new Upload();
+        $upload->setSupportResource(array());
+        $upload->setSupportSuffix(array());
+        $upload->setFormName('publicOrigin');
+        $result = $upload->exec();
+        if(!$result){
+            return false;
+        }
+        $filename = $upload->getFilename();
+        $fileArr = explode('.',$filename);
+        $fileType = end($fileArr);
+        $path = $upload->path('/uploads/pub_origin/');
+        $upload->buildCode();
+        $code = $upload->getRetval();
+        $fileName = $path.$code['code'].'.'.$fileType;
+        $result = $upload->moveFile($fileName);
+        if(!$result){
+            $error = array_values($upload->getErrval());
+            $str = is_array($error)?implode(',',$error):$error;
+            return $this->returnJson($str);
+        }
+        $file = str_replace(PUBLIC_PATH,'',$fileName);
+//        return $this->returnJson('上传成功',true,1,['fileName'=>$file]);
+        $name = $this->request->param('name','','string');
+        $add = ['name'=>$name,'thumb'=>$file,'create_time'=>time()];
+        $res = Db::name('public_origin')->insert($add);
+        if(!$res)
+            return $this->returnJson('上传失败');
+        return $this->returnJson('上传成功');
+
     }
 
 }
