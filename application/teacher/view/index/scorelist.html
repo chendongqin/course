@@ -1,10 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>成绩</title>
-</head>
-<body>
+    {load href="/static/css/s_box-title.css"/} {load href="/static/css/html-body-container.css"/} {load href="/static/css/s_nav.css"/}
+    <style>
+        main{
+            padding: 20px 20px;
+        }
+        table{
+            margin: 0 auto;
+            width: 1000px;
+            padding: 20px;
+            border: solid 1px rgb(199, 199, 199);
+            text-align: center;
+            border-collapse: collapse;
+            
 
+        }
+        th,tr{
+            height: 30px;
+        }
+        th,td{
+            border: solid 1px rgb(199, 199, 199);
+        }
+        tr:nth-of-type(2n){
+            background-color: rgb(232, 250, 255);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <span class="nav_bth nav_bth_first">
+                    <img src="/static/image/logo.jpg" alt="logo">
+                </span>
+                <span class="nav_bth">首页</span>
+                <span class="nav_bth">我的课程</span>
+                <span class="nav_bth">课程申请</span>
+                <span class="nav_bth">个人中心</span>
+                <a class="nav_bth" href="/index/index/logout?channel=student">登出</a>
+            </nav>
+
+        </header>
+
+        <main>
+            <section>
+                <table>
+                    <caption><h2>xxx专业xx（课程）学生成绩</h2></caption>
+                    <thead>
+                        <tr>
+                            <th>学号</th>
+                            <th>姓名</th>
+                            <th>班级</th>
+                            <th>作业1</th>
+                            <th>作业2</th>
+                            <th>作业3</th>
+                            <th>作业4</th>
+                            <th>作业5</th>
+                            <th>总得分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>201441051009</td>
+                            <td>zyy</td>
+                            <td>计算1491</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                                <td>201441051006</td>
+                                <td>lwh</td>
+                                <td>计算1491</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                    <td>201441051009</td>
+                                    <td>zyy</td>
+                                    <td>计算1491</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                        <td>201441051006</td>
+                                        <td>lwh</td>
+                                        <td>计算1491</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                            <td>201441051009</td>
+                                            <td>zyy</td>
+                                            <td>计算1491</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
 </body>
+
 </html>

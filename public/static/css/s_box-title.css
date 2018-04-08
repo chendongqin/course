@@ -1,0 +1,21 @@
+.top_title {
+    display: block;
+    height: 40px;
+    padding: 7px 15px 5px 10px;
+    line-height: 30px;
+    border-bottom: 1px dotted rgb(167, 220, 255);
+   
+    
+}
+
+.top_title h4 {
+    color: rgb(167, 220, 255);
+    display: inline-block;
+    float: left;
+}
+
+.top_title p {
+    color: gold;
+    display: inline-block;
+    float: right;
+}

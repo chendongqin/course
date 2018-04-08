@@ -4,18 +4,69 @@
     <meta charset="UTF-8">
     <title>创建课程</title>
     {load href="/static/js/jq.js" /}
-    {load href="/static/js/teacher/index/course_add.js"/}
+    <style>
+        form{
+            width:450px;
+            margin: 50px auto;
+        }
+        .top_add{
+            width:100%;
+            height: 40px;
+            background-color: rgb(162, 205, 253);
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            
+        }
+        .add_inp{
+            border: solid 1px rgb(214, 214, 214);
+            border-top: none;
+            width:408px ;
+            padding: 20px;
+            height: 500px;
+
+        }
+        form label{
+            display: inline-block;
+            width: 150px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+        }
+        form input{
+            width: 200px;
+            height: 20px;
+        }
+        form textarea{
+            width: 196px;
+            height: 150px;
+            vertical-align: top;
+        }
+        #addCourse{
+            width: 50px;
+            float: right;
+            margin: 20px 55px;
+        }
+
+    </style>
 </head>
 <body>
     <form action="/teacher/index/addcourse" method="post">
-        <label>课程名字</label><input type="text" name="name" id="name"><br>
-        <label >课程图片</label><input type="file" name="courseImage"  id="courseImage"><br><img src="" width="100" id="courseImg"><br>
-        <input type="hidden" name="image" id="image">
-        <label>学分</label><input type="text" name="credit" id="credit"><br>
-        <label>开始时间</label><input type="text" name="start_time" id="start_time"><br>
-        <label>结束时间</label><input type="text" name="end_time" id="end_time"><br>
-        <label>课程描述</label><textarea name="describe" id="describe"></textarea><br>
+        <div class="top_add"><b>创建新课程</b></div>
+
+        <div class="add_inp">
+        <label>课程名字</label><input type="text" name="name" id="name" required><br>
+        <label >课程图片</label><input type="file" name="courseImage"  id="courseImage"  required><br><img src="" width="100" id="courseImg"><br>
+        <input type="hidden" name="image" id="image"  required>
+        <label>学分</label><input type="text" name="credit" id="credit"  required><br>
+        <label>开始时间</label><input type="text" name="start_time" id="start_time"  required><br>
+        <label>结束时间</label><input type="text" name="end_time" id="end_time" required><br>
+        <label>课程描述</label><textarea name="describe" id="describe" required></textarea><br>
         <input type="submit" value="创建" id="addCourse">
+    </div>
     </form>
 </body>
 </html>

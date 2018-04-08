@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>课件上传</title>
+    <style>
+    form{
+            width:450px;
+            margin: 50px auto;
+        }
+        .top_add{
+            width:100%;
+            height: 40px;
+            background-color: rgb(162, 205, 253);
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            
+        }
+        .add_inp{
+            border: solid 1px rgb(214, 214, 214);
+            border-top: none;
+            width:408px ;
+            padding: 20px;
+         
+
+        }
+        form label{
+            display: inline-block;
+            width: 150px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size:15px; 
+        }
+        form input{
+            width: 200px;
+            height: 20px;
+        }
+        #courseWare{
+           
+           float: right;
+           margin-right: 50px;
+        }
+        .courseWareUp{
+            text-align: center;
+            margin-top: 30px;
+        }
+        #courseWareUp{
+            width: 50px;
+            height: 30px;
+            
+        }
+       </style>
+</head>
+<body>
+        <form action="" method="post">
+            <div class="top_add"><b>课件上传</b></div>
+            <div class="add_inp">
+                    <label >课件名称</label><input type="text" name="name" id="name" required><br>
+                    <input type="file" name="courseWare"  id="courseWare"  required><br>
+                    <div class="courseWareUp">
+                    <input type="submit"  id='courseWareUp' value="发布"></div>
+                </div>
+        </div>
+
+            
+        </form>
+</body>
+</html>

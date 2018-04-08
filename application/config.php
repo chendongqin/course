@@ -249,4 +249,11 @@ return [
     ],
 
     'myUrl'=>'http://www.course.com',
+
+    'courseType'=>[
+        0=>'其它',
+        1=>'信息系',
+        2=>'金融系',
+        3=>'机械系',
+    ],
 ];

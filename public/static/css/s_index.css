@@ -4,7 +4,8 @@ body,
 ul,
 li,
 h4,
-p{
+p,
+a{
     margin: 0;
     padding: 0;
     border: 0;
@@ -16,6 +17,12 @@ html {
 
 body {
     height: 100%;
+}
+a{
+    display: inline-block;
+    text-decoration: none;
+    font-size:15px;
+    color: black;
 }
 
 .container {
@@ -45,10 +52,10 @@ main{
     justify-content: space-between;
     
 }
-.nav_bth:hover{
+/* .nav_bth:hover{
     background-color:  rgb(167, 220, 255);
     color: white;
-}
+} */
 
 .div_border{
     border: solid 2px rgb(204, 203, 203);
@@ -73,9 +80,6 @@ main{
     float: right;
 }
 
-
-
-
 .sec_top_left{
     width: 260px;
     height: 230px;
@@ -84,7 +88,6 @@ main{
 .person{
     width: 270px;
     height: 190px;
-    /* border: solid 1px firebrick; */
     text-align: center;
 }
 .person img{
@@ -132,7 +135,6 @@ main{
 .top_center_right{
     width: 430px;
     height: 200px;
-    /* border: solid 1px gold; */
     float: right;
     overflow: auto;
 }
@@ -142,6 +144,9 @@ main{
     padding: 5px 10px;
     line-height: 40px;
 
+}
+.center_right:hover{
+    background-color: rgb(217, 240, 255);
 }
 .squrt_center{
     width: 8px;
@@ -158,6 +163,10 @@ main{
     line-height: 30px;
     margin-left: 10px;
     font-size: 15px;
+ 
+}
+.top_center_right p:nth-of-type(1){
+    float: left;
 }
 .top_center_right p:nth-of-type(2){
     float: right;
@@ -165,6 +174,16 @@ main{
     font-size: 12px;
     margin-top: 5px;
     color: rgb(184, 183, 183);
+}
+.top_center_right p:nth-of-type(3){
+    line-height: 30px;
+}
+.top_center_right p:nth-of-type(3) a{
+    width: 50px;
+    height: 20px;
+    font-size: 13px;
+    color: gold;
+    line-height: 20px;
 }
 
 
@@ -178,6 +197,9 @@ main{
     height: 30px;
     line-height: 30px;
     padding: 0 10px;
+}
+.right_text:hover{
+    background-color: rgb(217, 240, 255);
 }
 .squrt{
     width: 8px;
@@ -261,16 +283,22 @@ main{
     line-height: 20px;
     margin: 4px auto;
 }
+
 .span_one h4{
-    color: rgb(66, 179, 255);
+ 
     display: inline-block;
     float: left;
 }
-.span_one h4{
-    color: rgb(66, 179, 255);
+#changeGroom{
+    font-size: 15px;
+    width: 60px;
+    height: 20px;
     display: inline-block;
-    float: left;
+    line-height: 0;
+    color: white;
 }
+
+
 .span_one p{
     color: rgb(187, 186, 186);
     display: inline-block;
@@ -286,12 +314,14 @@ main{
     width: 65px;
     text-align: center;
     border-radius: 7px;
+    cursor: pointer;
 }
 .span_two p:nth-of-type(2){
     color: rgb(66, 179, 255);
     font-size:5px;
     float: right;
 }
+
 
 
 
