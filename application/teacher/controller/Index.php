@@ -150,7 +150,7 @@ class Index extends Teacherbase{
         $answers = Db::name('message')->where('father_id',$fatherId)->order('create_time','asc')->select();
         foreach ($answers as $key=>$answer){
             $table = $answer['is_teacher']==1?'teachers':'students';
-            $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
+            $userName = Db::name($table)->where('Id',$answer['user_id'])->column('name');
             $answers[$key]['user_name'] = $userName;
         }
         return $this->returnJson('获取成功',true,1,$answers);
@@ -192,11 +192,61 @@ class Index extends Teacherbase{
         return $this->fetch();
     }
 
+    public function pass(){
+        $user = $this->getUser();
+        $id = $this->request->param('id','','int');
+        $apply = Db::name('apply')->where('Id',$id)->find();
+        if(empty($apply))
+            return $this->returnJson('申请不存在');
+        $course = Db::name('course')->where('Id',$apply['course_id'])->find();
+        if(empty($course))
+            return $this->returnJson('课程不存在');
+        if($course['teacher_id']!=$user['Id'])
+            return $this->returnJson('您没有权限');
+        Db::startTrans();
+        $res = Db::name('apply')->where('Id',$id)->delete();
+        if(!$res){
+            return $this->returnJson('操作失败');
+        }
+        $virefy = Db::name('course_students')->where(['course_id'=>$apply['course_id'],'stu_id'=>$apply['stu_id']])->find();
+        if(!empty($virefy))
+            return $this->returnJson('已加入课程');
+        $add = ['course_id'=>$apply['course_id'],'stu_id'=>$apply['stu_id'],'create_time'=>time()];
+        $res = Db::name('course_students')->insert($add);
+        if(!$res){
+            Db::rollback();
+            return $this->returnJson('处理失败,请重试');
+        }
+        Db::commit();
+        return $this->returnJson('操作成功',true,1);
+    }
+
+    public function refuse(){
+        $user = $this->getUser();
+        $id = $this->request->param('id','','int');
+        $apply = Db::name('apply')->where('Id',$id)->find();
+        if(empty($apply))
+            return $this->returnJson('申请不存在');
+        $course = Db::name('course')->where('Id',$apply['course_id'])->find();
+        if(empty($course))
+            return $this->returnJson('课程不存在');
+        if($course['teacher_id']!=$user['Id'])
+            return $this->returnJson('您没有权限');
+        $res = Db::name('apply')->where('Id',$id)->delete();
+        if(!$res)
+            return $this->returnJson('处理失败,请重试');
+        return $this->returnJson('操作成功',true,1);
+    }
+
     public function changepwd(){
         return $this->fetch();
     }
 
     public function coursedetail(){
+        return $this->fetch();
+    }
+
+    public function chat(){
         return $this->fetch();
     }
 

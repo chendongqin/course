@@ -344,5 +344,22 @@ class Index extends Studentbase{
         return $this->fetch();
     }
 
+    public function apply(){
+        $courseId = $this->request->param('id','','int');
+        $reason = $this->request->param('reason','','string');
+        $course = Db::name('courses')->where('Id',$courseId)->find();
+        if(empty($course))
+            return $this->returnJson('课程不存在');
+        $user = $this->getUser();
+        $add =['stu_id'=>$user['Id'],'course_id'=>$courseId,'reason'=>$reason,'create_time'=>time()];
+        $res = Db::name('apply')->insert($add);
+        if(!$res)
+            return $this->returnJson('申请失败，请重试');
+        return $this->returnJson('申请成功',true,1);
+    }
+
+    public function chat(){
+        return $this->fetch();
+    }
 
 }
