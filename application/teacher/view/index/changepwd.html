@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+  
+    <style>
+        form{
+            width:450px;
+            margin: 50px auto;
+        }
+        .top_add{
+            width:100%;
+            height: 40px;
+            background-color: rgb(162, 205, 253);
+            color: white;
+            font-size: 20px;
+            text-align: center;
+            line-height: 40px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            
+        }
+        .add_inp{
+            border: solid 1px rgb(214, 214, 214);
+            border-top: none;
+            width:408px ;
+            padding: 20px;
+         
+
+        }
+        form label{
+            display: inline-block;
+            width: 150px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            font-size: 15px;
+        }
+        form input{
+            width: 200px;
+            height: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <form action="/teacher/index/alterpwd" method="post">
+        <div class="top_add"><b>修改密码</b></div>
+
+        <div class="add_inp">
+                <label>原密码</label><input type="password" name="oldpwd" id="oldpwd" required><br>
+
+        <label>新密码</label><input type="password" name="newpwd1" id="newpwd1" required><br>
+        <label >再确认新密码</label><input type="password" name="newpwd2"  id="newpwd2"  required><br><img src="" width="100" id="courseImg">
+        <input type="submit" value="修改" required width="60px" height="30px">
+    </div>
+    </form>
+</body>
+</html>

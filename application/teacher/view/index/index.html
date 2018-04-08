@@ -21,10 +21,10 @@
                 <span class="nav_bth nav_bth_first">
                     <img src="/static/image/logo.jpg" alt="logo">
                 </span>
-                <span class="nav_bth">首页</span>
-                <span class="nav_bth">我的课程</span>
-                <span class="nav_bth">课程申请</span>
-                <span class="nav_bth">个人中心</span>
+                <span class="nav_bth"><a href="/">首页</a></span>
+                <span class="nav_bth"><a href="/teacher/index/mycourse">我的课程</a></span>
+                <span class="nav_bth"><a href="/teacher/index/apply">课程申请</a></span>
+                <span class="nav_bth"><a href="/teacher/index/changepwd">修改密码</a></span>
                 <a class="nav_bth" href="/index/index/logout?channel=student">退出</a>
             </nav>
 
@@ -44,8 +44,9 @@
                         <img src="/static/image/css.jpg" alt="头像">
                         <div class="person_text">
                             <p>欢迎您~</p>
-                            <p>陈奕迅老师</p>
-                            <p>jmu2014211</p>
+                            <p>{$teacher.name}老师</p>
+                            <p>{$teacher.job_no}</p>
+                            <p>{$teacher.college}</p>
                         </div>
 
                     </div>
@@ -59,76 +60,27 @@
                     <div class="top_center_big">
                         <div class="top_center_left">
                             <h4>本学期课程：</h4>
-                            <p>JAVA</p>
-                            
-
+                            {if condition="!empty($mycourse)"}
+                            {volist name="mycourse" id="data"}
+                            <p>{$data.name}</p>
+                            {/volist}
+                            {else}
+                            <p><a href="/student/index/courseadd">添加课程</a></p>
+                            {/if}
                         </div>
                         <div class="top_center_right">
+                            {if condition="!empty($origin)"}
+                            {volist name="origin" id="data"}
                             <div class="center_right">
                                 <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">
-                                
-                                <a href="" class="">下载</a>
-                            </p>
-
+                                <p>{$data.name}</p>
+                                <p>{php}echo date('Y-m-d',$data['create_time']){/php}</p>
+                                <p><a href="/student/resource/downpOrigin?id={$data.Id}">下载</a></p>
                             </div>
-
-                            <div class="center_right">
-                                <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">                       
-                                <a href="" class="">下载</a>
-                            </p>
-
-                            </div>
-                            <div class="center_right">
-                                <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">                       
-                                    <a href="" class="">下载</a>
-                                </p>
-
-                            </div>
-                            <div class="center_right">
-                                <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">                       
-                                    <a href="" class="">下载</a>
-                                </p>
-
-                            </div>
-                            <div class="center_right">
-                                <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">                       
-                                    <a href="" class="">下载</a>
-                                </p>
-
-                            </div>
-                            <div class="center_right">
-                                <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">                       
-                                    <a href="" class="">下载</a>
-                                </p>
-
-                            </div>
-                            <div class="center_right">
-                                <span class="squrt_center "></span>
-                                <p>[CSS+HTML]2018-03-05课件</p>
-                                <p>2018-03-05</p>
-                                <p class="center_right_three">                       
-                                    <a href="" class="">下载</a>
-                                </p>
-
-                            </div>
+                            {/volist}
+                            {else}
+                            <p>没有数据</p>
+                            {/if}
                         </div>
                     </div>
                 </div>
@@ -187,11 +139,10 @@
             </section>
             <section id="main_bottom">
                 <span class="top_title">
-                    <h4></h4>
-                    <p>MORE
-                        <<</p>
+                    <h4>申请列表</h4>
+                    <p><a href="/teacher/index/applylist">MORE
+                        <<<</a>/p>
                 </span>
-               
 
             </section>
         </main>

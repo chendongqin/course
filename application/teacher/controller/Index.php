@@ -15,6 +15,18 @@ use ku\Tool;
 class Index extends Teacherbase{
 
     public function index(){
+        $user = $this->getUser();
+        $pubOrigin  = Db::name('public_origin')->order('create_time','desc')->limit(10)->select();
+        $this->assign('origin',$pubOrigin);
+        $mycourse = Db::name('courses')->where(['teacher_id'=>$user['Id'],'end_time'=>['>',time()]])->select();
+        $this->assign('mycourse',$mycourse);
+        $courseIds = Db::name('courses')->where(['teacher_id'=>$user['Id'],'end_time'=>['>',time()]])->column('Id');
+        $applys = Db::name('apply')->where('course_id','in',$courseIds)->order('create_time','desc')->limit(10)->select();
+        foreach ($applys as $key=>$apply){
+            $course = Db::name('courses')->where('Id',$apply['course_id'])->find();
+            $applys[$key]['courseName'] = $course['name'];
+        }
+        $this->assign('applys',$applys);
         return $this->fetch();
     }
 
@@ -168,6 +180,23 @@ class Index extends Teacherbase{
             ->where('a.course_id',$courseId)
             ->select();
         $this->assign('scorelist',$scorelist);
+        return $this->fetch();
+    }
+
+    public function applylist(){
+        $page = (int)$this->request->param('page',1,'int');
+        $user = $this->getUser();
+        $courseIds = Db::name('courses')->where(['teacher_id'=>$user['Id'],'end_time'=>['>',time()]])->column('Id');
+        $applys = Db::name('apply')->where('course_id','in',$courseIds)->paginate(15,false,['page'=>$page]);
+        $this->assign('pager',$applys->toArray());
+        return $this->fetch();
+    }
+
+    public function changepwd(){
+        return $this->fetch();
+    }
+
+    public function coursedetail(){
         return $this->fetch();
     }
 

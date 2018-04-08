@@ -79,7 +79,7 @@
                                     <p>{$data.teacherName}</p>
                                 </span>
                                 <span class="span_two">
-                                    <p>{php}echo $data['join']==0?'添加课程':'<a href="/student/index/coursedetail?id='.$data['Id'].'">进入课程</a>';{/php}</p>
+                                    <p> {php}echo $data['join']==0?'<a class="Add" href="javascript:;" data-id="'.$data['Id'].'" onclick="onClick()">添加课程</a>':'<a href="/student/index/coursedetail?id='.$data['Id'].'">进入课程</a>';{/php}</p>
                                     <p>推荐指数：5</p>
                                 </span>
                             </div>
@@ -115,5 +115,10 @@
         </main>
     </div>
     </body>
+<script>
+    function onClick(){
+        prompt('请输入验证码')
+    }
+</script>
 
 </html>

@@ -158,136 +158,50 @@ color: rgb(194, 194, 194);
                 <span class="nav_bth nav_bth_first">
                     <img src="/static/image/logo.jpg" alt="logo">
                 </span>
-                <span class="nav_bth">首页</span>
-                <span class="nav_bth">资源中心</span>
-                <span class="nav_bth">作业管理</span>
-                <span class="nav_bth">我的课程</span>
-                <span class="nav_bth">个人中心</span>
+                <span class="nav_bth"><a href="/">首页</a></span>
+                <span class="nav_bth"><a href="/teacher/index/mycourse">我的课程</a></span>
+                <span class="nav_bth"><a href="/teacher/index/apply">课程申请</a></span>
+                <span class="nav_bth"><a href="/teacher/index/changepwd">修改密码</a></span>
                 <a class="nav_bth" href="/index/index/logout?channel=student">登出</a>
             </nav>
 
         </header>
 
         <main>
-            <div class="current">
-                <span class="top_title">
-                    <h4>当前课程</h4>
-                    <p>
-                        <a href="">添加课程</a>
-                    </p>
-                </span>
-
-                <section>
-                    <div class="sec_left">
-                        <li class="course">
-                            <div class="course_img">
-                                <img src="/static/image/css.jpg" alt="logo">
-                            </div>
-                            <div class="text">
-                                <span class="span_one">
-                                    <h4>HTML+CSS</h4>
-                                    <p>李旺</p>
-                                </span>
-                                <span class="span_two">
-                                    <p><a class="end-course">查看课程</a></p>
-                                    <p><a class="end-course">结束课程</a></p>
-                                </span>
-                            </div>
-                        </li>
-                    </div>
-
-                    <div class="sec_right">
-
-                        <div class="sec_right_text">
-                            <h3>课程名称：CSS+HTML</h3>
+            {if condition="!empty($pager['data'])"}
+            {volist name="pager.data" id="data"}
+            <section>
+                <div class="sec_left">
+                    <li class="course">
+                        <div class="course_img">
+                            <img src="{php}echo empty($data['image'])?'/static/image/css.jpg':$data['image']{/php}" alt="logo">
                         </div>
-                        <div class="sec_right_text">
-                            <h4>任教老师：李旺</h4>
-                            <p>联系方式：15489856445</p>
+                        <div class="text">
+                            <span class="span_one">
+                                <h4>{$data.name}</h4>
+                                <p>{$teacher.name}</p>
+                            </span>
+                            <span class="span_two">
+                                <p><a href="/teacher/index/coursedetail?id={$data.Id}" id="span_two_p_a">查看课程</a></p>
+                                <p>推荐指数：5</p>
+                            </span>
                         </div>
-                        <div class="sec_right_text">
-                            <p>开课时间：2018-03-25</p>
-                            <p>结束时间：2018-06-18</p>
-                        </div>
-                        <div class="sec_right_text">
-                            <h4>课程简介：</h4>
-                        </div>
-                        <div class="sec_right_text  sec_right_text_p">
-                            <p>HTML（Hypertext Markup Language）。HTML是一种规范，一种标准，它通过标记符号来标记要显示的网页中的各个部分。网页文件本身是一种文本文件，通过在文本文件中添加标记符，可以告诉浏览器如何显示其中的内容（如：文字如何处理，画面如何安排，图片如何显示等）。浏览器按顺序阅读网页文件，然后根据标记符解释和显示其标记的内容，对书写出错的标记将不指出其错误，且不停止其解释执行过程，编制者只能通过显示效果来分析出错原因和出错部位。但需要注意的是，对于不同的浏览器，对同一标记符可能会有不完全相同的解释，因而可能会有不同的显示效果。</p>
-                        </div>
-                        <div class="sec_right_text sec_right_text_p">
-                            <p>CSS（Cascading Style Sheet）可译为“层叠样式表”或“级联样式表”，它定义如何显示 HTML 元素，用于控制Web页面的外观。通过使用CSS实现页面的内容与表现形式分离，极大提高了工作效率
-                                。样式存储在样式表中，通常放在
+                    </li>
+                </div>
 
-                                <head>部分或存储在 外部CSS文件中。作为网页标准化设计的趋势，CSS取得了浏览器厂商的广泛支持，正越来越多的被应用到网页设计中去。</p>
-                        </div>
-                    </div>
+                <div class="sec_right">
 
-                </section>
-               
-            </div>
-            <hr>
-            <div class="end">
-
-
-                <span class="top_title">
-                    <h4>已结束课程</h4>
-         
-                </span>
-                 <div class="search">
-                        <input name="inp_search" type="text" placeholder="请输入您要搜索的课程名称">
-                        <input name="btn_search" type="button" value="搜索">
-                    </div> 
-
-                <section>
-                    <div class="sec_left">
-                        <li class="course">
-                            <div class="course_img">
-                                <img src="/static/image/css.jpg" alt="logo">
-                            </div>
-                            <div class="text">
-                                <span class="span_one">
-                                    <h4>HTML+CSS</h4>
-                                    <p>李旺</p>
-                                </span>
-                                <span class="span_two">
-                                    <p><a class="end-course">查看课程</a></p>
-                                    <p >课程已结束</p>
-                                </span>
-                            </div>
-                        </li>
-                    </div>
-
-                    <div class="sec_right">
-
-                        <div class="sec_right_text">
-                            <h3>课程名称：CSS+HTML</h3>
-                        </div>
-                        <div class="sec_right_text">
-                            <h4>任教老师：李旺</h4>
-                            <p>联系方式：15489856445</p>
-                        </div>
-                        <div class="sec_right_text">
-                            <p>开课时间：2018-03-25</p>
-                            <p>结束时间：2018-06-18</p>
-                        </div>
-                        <div class="sec_right_text">
-                            <h4>课程简介：</h4>
-                        </div>
-                        <div class="sec_right_text  sec_right_text_p">
-                            <p>HTML（Hypertext Markup Language）。HTML是一种规范，一种标准，它通过标记符号来标记要显示的网页中的各个部分。网页文件本身是一种文本文件，通过在文本文件中添加标记符，可以告诉浏览器如何显示其中的内容（如：文字如何处理，画面如何安排，图片如何显示等）。浏览器按顺序阅读网页文件，然后根据标记符解释和显示其标记的内容，对书写出错的标记将不指出其错误，且不停止其解释执行过程，编制者只能通过显示效果来分析出错原因和出错部位。但需要注意的是，对于不同的浏览器，对同一标记符可能会有不完全相同的解释，因而可能会有不同的显示效果。</p>
-                        </div>
-                        <div class="sec_right_text sec_right_text_p">
-                            <p>CSS（Cascading Style Sheet）可译为“层叠样式表”或“级联样式表”，它定义如何显示 HTML 元素，用于控制Web页面的外观。通过使用CSS实现页面的内容与表现形式分离，极大提高了工作效率
-                                。样式存储在样式表中，通常放在
-
-                                <head>部分或存储在 外部CSS文件中。作为网页标准化设计的趋势，CSS取得了浏览器厂商的广泛支持，正越来越多的被应用到网页设计中去。</p>
-                        </div>
-                    </div>
-
-                </section>
-
-            </div>
+                    <div class="sec_right_text"><h3>课程名称：{$data.name}</h3></div>
+                    <div class="sec_right_text"><h4>任教老师：{$teacher.name}</h4> <p>联系方式：{$teacher.email}</p></div>
+                    <div class="sec_right_text"><p>开课时间：{php}echo date('Y-m-d',$data['start_time']);{/php}</p><p>结束时间：{php}echo date('Y-m-d',$data['end_time']);{/php}</p></div>
+                    <div class="sec_right_text"><h4>课程简介：</h4></div>
+                    <div class="sec_right_text  sec_right_text_p"><p>{$data.describe}</p></div>
+                </div>
+            </section>
+            {/volist}
+            {else}
+            <p><a href="/teacher/index/courseadd">添加课程</a></p>
+            {/if}
         </main>
     </div>
 </body>
