@@ -9,6 +9,7 @@ namespace app\teacher\controller;
 
 use base\Teacherbase;
 use think\Db;
+use ku\Upload;
 
 class Resource extends Teacherbase{
 
@@ -53,29 +54,53 @@ class Resource extends Teacherbase{
         $this->assign('pager',$origins);
         return $this->fetch();
     }
+//    //添加
+//    public function add(){
+//        $user = $this->getUser();
+//        $name = $this->request->param('name','','string');
+//        $thumb = $this->request->param('thumb','','string');
+//        $courseId = $this->request->param('courseId','','string');
+//        if(empty($thumb))
+//            return $this->returnJson('课件路径不为空');
+//        if(!is_file(PUBLIC_PATH.$thumb))
+//            return $this->returnJson('文件不存在');
+//        $course = Db::name('courses')->where('Id',$courseId) ->find();
+//        if(empty($course)){
+//            $this->returnJson('课程不存在');
+//
+//        }
+//        if($course['teacher_id']!=$user['Id']){
+//            $this->returnJson('您没有权限添加该课程课件');
+//        }
+//        $add = ['teacher_id'=>$user['Id'],'name'=>$name,'thumb'=>$thumb,'create_time'=>time(),'course_id'=>$courseId];
+//        $res = Db::name('courseware')->insert($add);
+//        if($res)
+//            return $this->returnJson('上传课件成功',true,1);
+//        return $this->returnJson('上传失败，请重试');
+//    }
+
     //添加
     public function add(){
         $user = $this->getUser();
         $name = $this->request->param('name','','string');
-        $thumb = $this->request->param('thumb','','string');
         $courseId = $this->request->param('courseId','','string');
-        if(empty($thumb))
-            return $this->returnJson('课件路径不为空');
+        $thumb = $this->upData('coursewareFile');
+        if($thumb ===false)
+            return $this->error('课件上传失败');
         if(!is_file(PUBLIC_PATH.$thumb))
-            return $this->returnJson('文件不存在');
+            return $this->error('文件不存在');
         $course = Db::name('courses')->where('Id',$courseId) ->find();
         if(empty($course)){
-            $this->returnJson('课程不存在');
-
+            $this->error('课程不存在');
         }
         if($course['teacher_id']!=$user['Id']){
-            $this->returnJson('您没有权限添加该课程课件');
+            $this->error('您没有权限添加该课程课件');
         }
         $add = ['teacher_id'=>$user['Id'],'name'=>$name,'thumb'=>$thumb,'create_time'=>time(),'course_id'=>$courseId];
         $res = Db::name('courseware')->insert($add);
         if($res)
-            return $this->returnJson('上传课件成功',true,1);
-        return $this->returnJson('上传失败，请重试');
+            return $this->success('上传课件成功');
+        return $this->error('上传失败，请重试');
     }
 
     public function addorigin(){
@@ -133,4 +158,54 @@ class Resource extends Teacherbase{
         @unlink(PUBLIC_PATH.$origin['thumb']);
         return $this->returnJson('删除成功',true,1);
     }
+    //下载公共资源
+    public function downpOrigin(){
+        $Id = $this->request->param('id','','int');
+        $origin = Db::name('public_origin')->where('Id',$Id)->find();
+        if(empty($origin)){
+            $this->assign('error','课件不存在');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+        if(!is_file(PUBLIC_PATH.$origin['thumb'])) {
+            $this->assign('error','文件不存在');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+        $fileArr = explode('.',$origin['thumb']);
+        $type = end($fileArr);
+        header('Content-Type:application/'.$type);
+        header('Content-Disposition:attachment;filename='.$origin['name'].'.'.$type);
+        header('Cache-Control:max-age=0');
+        readfile(PUBLIC_PATH.$origin['thumb']);
+        exit();
+    }
+
+
+    public function upData($formName){
+        if(empty($formName))
+            return false;
+        $upload = new Upload();
+        $upload->setSupportResource(array());
+        $upload->setSupportSuffix(array());
+        $upload->setFormName($formName);
+        $result = $upload->exec();
+        if(!$result){
+            return false;
+        }
+        $filename = $upload->getFilename();
+        $fileArr = explode('.',$filename);
+        $fileType = end($fileArr);
+        $path = $upload->path('/uploads/teacher/'.strtolower($formName).'/');
+        $upload->buildCode();
+        $code = $upload->getRetval();
+        $fileName = $path.$code['code'].'.'.$fileType;
+        $result = $upload->moveFile($fileName);
+        if(!$result){
+            $error = array_values($upload->getErrval());
+            $str = is_array($error)?implode(',',$error):$error;
+            return false;
+        }
+        $file = str_replace(PUBLIC_PATH,'',$fileName);
+        return $file;
+    }
+
 }

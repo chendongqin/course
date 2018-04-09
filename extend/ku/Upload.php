@@ -326,7 +326,6 @@ final class Upload {
             }
             return $passed;
         }
-
         return false;
     }
 

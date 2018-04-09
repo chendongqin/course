@@ -27,7 +27,7 @@ $(function () {
                    '                                <p>'+val.teacher_name+'</p>\n' +
                    '                            </span>\n' +
                    '                            <span class="span_two">\n' +
-                   '                                <p>添加课程</p>\n' +
+                   '                                <p><a href="javascript:;" class="addcourse" data-id="'+val.Id+'">添加课程</a></p>\n' +
                    '                                <p>推荐指数：5</p>\n' +
                    '                            </span>\n' +
                    '                        </div>\n' +
@@ -70,7 +70,7 @@ $(function () {
                             '                                <p>'+val.teacher_name+'</p>\n' +
                             '                            </span>\n' +
                             '                            <span class="span_two">\n' +
-                            '                                <p>添加课程</p>\n' +
+                            '                                <p><a href="javascript:;" class="addcourse" data-id="'+val.Id+'">添加课程</a></p>\n' +
                             '                                <p>推荐指数：5</p>\n' +
                             '                            </span>\n' +
                             '                        </div>\n' +

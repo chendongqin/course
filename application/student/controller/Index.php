@@ -122,7 +122,6 @@ class Index extends Studentbase{
     public function coursedetail(){
         $request = $this->request;
         $courseId = $request->param('id','','int');
-        $page = $request->param('page',1,'int');
         $user = $this->getUser();
         $courseStuModel = Db::name('course_students');
         $myJoin = $courseStuModel->where(['course_id'=>$courseId,'stu_id'=>$user['Id']])->find();
@@ -146,11 +145,10 @@ class Index extends Studentbase{
             ->order('create_time')
             ->select();
         foreach ($taskJobs as $key=>$taskJob){
-            $task = Db::name('task')->where(['stu_id'=>$user['Id'],'task_id'=>$taskJob['Id']]);
+            $task = Db::name('task')->where(['stu_id'=>$user['Id'],'task_id'=>$taskJob['Id']])->find();
             $taskJobs[$key]['task'] = $task;
         }
         $this->assign('tasks',$taskJobs);
-
         return $this->fetch();
     }
 
@@ -261,7 +259,7 @@ class Index extends Studentbase{
         $answers = Db::name('message')->where('father_id',$fatherId)->order('create_time','asc')->select();
         foreach ($answers as $key=>$answer){
             $table = $answer['is_teacher']==1?'teachers':'students';
-            $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
+            $userName = Db::name($table)->where('Id',$answer['user_id'])->column('name');
             $answers[$key]['user_name'] = $userName;
         }
         return $this->returnJson('获取成功',true,1,$answers);
@@ -279,7 +277,7 @@ class Index extends Studentbase{
         $course = Db::name('courses')->find('Id',$message['course_id'])->find();
         if(empty($course))
             return $this->returnJson('课程不存在');
-        $courseStudent = Db::name('course_students')->where(['stu_id'=>$user['Id'],'course_id'=>$courseId])->find();
+        $courseStudent = Db::name('course_students')->where(['stu_id'=>$user['Id'],'course_id'=>$course['Id']])->find();
         if(empty($courseStudent))
             return $this->returnJson('发言请先加入课程');
         $add = ['course_id'=>$message['course_id'],'is_teacher'=>0,'user_id'=>$user['Id'],'father_id'=>$fatherId,'msg'=>$msg,'create_time'=>time()];
@@ -351,6 +349,12 @@ class Index extends Studentbase{
         if(empty($course))
             return $this->returnJson('课程不存在');
         $user = $this->getUser();
+        $exist = Db::name('apply')->where(['stu_id'=>$user['Id'],'course_id'=>$courseId])->find();
+        if(!empty($exist))
+            return $this->returnJson('已经发起了申请');
+        $joinExist = Db::name('course_students')->where(['stu_id'=>$user['Id'],'course_id'=>$courseId])->find();
+        if(!empty($joinExist))
+            return $this->returnJson('已经加入该课程');
         $add =['stu_id'=>$user['Id'],'course_id'=>$courseId,'reason'=>$reason,'create_time'=>time()];
         $res = Db::name('apply')->insert($add);
         if(!$res)

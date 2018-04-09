@@ -18,6 +18,7 @@ class Upload extends Studentbase{
     public function index(){
 
     }
+
     public function task(){
         $upload = new kuUpload();
         $upload->setSupportResource(array());

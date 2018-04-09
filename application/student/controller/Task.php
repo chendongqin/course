@@ -8,9 +8,14 @@
 namespace app\student\controller;
 use base\Studentbase;
 use think\Db;
+use think\Config;
+use ku\Upload as kuUpload;
+use ku\Pdf;
+
 
 class Task extends Studentbase{
 
+    private $_fileType = array('docx','doc','pdf');
     public function index(){
         $request = $this->request;
         $courseId = $request->param('id','','int');
@@ -71,5 +76,75 @@ class Task extends Studentbase{
         readfile(PUBLIC_PATH.$taskJob['thumb']);
         exit();
     }
+
+    public function see(){
+        $user = $this->getUser();
+        $Id = $this->request->param('id','','int');
+        $task = Db::name('task_job')->where(['Id'=>$Id])->find();
+        if(empty($task)){
+            $this->assign('error','没有该作业');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+
+        $course = Db::name('course_students')->where(['course_id'=>$task['course_id'],'stu_id'=>$user['Id']])->find();
+        if(empty($course)){
+            $this->assign('error','你没有权限查看');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+        if(!is_file(PUBLIC_PATH.$task['thumb']) or empty($task['thumb'])){
+            $this->assign('error','没有改文件');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
+        $url = Config::get('myUrl');
+        $this->redirect($url.$task['thumb']);
+    }
+
+    public function add(){
+        $taskJobId = $this->request->param('task_id','','int');
+        $taskJob = Db::name('task_job')->where('Id',$taskJobId)->find();
+        if(empty($taskJob))
+            return $this->error('作业不存在');
+        $upload = new kuUpload();
+        $upload->setSupportResource(array());
+        $upload->setSupportSuffix($this->_fileType);
+        $upload->setFormName('taskFile');
+        $result = $upload->exec();
+        if(!$result){
+            $error = array_values($upload->getErrval());
+            $str = is_array($error)?implode(',',$error):$error;
+            return $this->error($str);
+        }
+        $filename = $upload->getFilename();
+        $fileArr = explode('.',$filename);
+        $fileType = end($fileArr);
+        $path = $upload->path('/uploads/student/task/');
+        $upload->buildCode();
+        $code = $upload->getRetval();
+        $fileName = $path.$code['code'].'.'.$fileType;
+        $result = $upload->moveFile($fileName);
+        if(!$result){
+            $error = array_values($upload->getErrval());
+            $str = is_array($error)?implode(',',$error):$error;
+            return $this->error($str);
+        }
+        if($fileType != 'pdf'){
+            $converter = new Pdf();
+            $source = $fileName;
+            $export = $path.$code['code'].'.pdf';
+            $converter->execute($source, $export);
+            $fileName = $export;
+            @unlink($source);
+        }
+        $file = str_replace(PUBLIC_PATH,'',$fileName);
+        $user = $this->getUser();
+        $add = ['stu_id'=>$user['Id'],'course_id'=>$taskJob['course_id'],'thumb'=>$file,'task_id'=>$taskJobId,'create_time'=>time()];
+        $res = Db::name('task')->insert($add);
+        if($res)
+            return $this->success('上传成功');
+        return $this->error('上传失败');
+    }
+
+
+
 
 }

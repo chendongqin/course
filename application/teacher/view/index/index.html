@@ -8,8 +8,41 @@
     <title>首页</title>
     {load href="/static/css/s_index.css"/}
     {load href="/static/css/s_nav.css"/}
-        <!-- <link rel="stylesheet" href="1.png" type="image/png"> -->
+    {load href="/static/js/jq.js" /}
+    {load href="/static/js/teacher/index/apply.js" /}
 
+        <!-- <link rel="stylesheet" href="1.png" type="image/png"> -->
+    <style>
+        .applylist {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+
+        }
+        .applylist-left{
+            width: 45%;
+            padding: 20px;
+        }
+        .applylist-right{
+            width: 45%;
+            padding: 20px;
+
+        }
+        .applylist table{
+            border-collapse: collapse;
+            margin: 50px 0;
+
+        }
+        th,td{
+            border: 1px solid rgb(230, 231, 231);
+            width: 100px;
+            padding: 5px 5px;
+            height: 30px;
+            border-collapse: collapse;
+
+        }
+
+    </style>
     
 
 </head>
@@ -23,9 +56,9 @@
                 </span>
                 <span class="nav_bth"><a href="/">首页</a></span>
                 <span class="nav_bth"><a href="/teacher/index/mycourse">我的课程</a></span>
-                <span class="nav_bth"><a href="/teacher/index/apply">课程申请</a></span>
+                <span class="nav_bth"><a href="/teacher/index/applylist">课程申请</a></span>
                 <span class="nav_bth"><a href="/teacher/index/changepwd">修改密码</a></span>
-                <a class="nav_bth" href="/index/index/logout?channel=student">退出</a>
+                <a class="nav_bth" href="/index/index/logout?channel=teacher">退出</a>
             </nav>
 
         </header>
@@ -75,7 +108,7 @@
                                 <span class="squrt_center "></span>
                                 <p>{$data.name}</p>
                                 <p>{php}echo date('Y-m-d',$data['create_time']){/php}</p>
-                                <p><a href="/student/resource/downpOrigin?id={$data.Id}">下载</a></p>
+                                <p><a href="/teacher/resource/downpOrigin?id={$data.Id}">下载</a></p>
                             </div>
                             {/volist}
                             {else}
@@ -143,7 +176,52 @@
                     <p><a href="/teacher/index/applylist">MORE
                         <<<</a>/p>
                 </span>
-
+                <div class="applylist">
+                    <section class="left-applylist">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>学生</th>
+                                <th>课程名</th>
+                                <th>申请理由</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            {if condition="!empty($applys)"}
+                            {volist name="applys" id="data"}
+                            {if condition="$i==6"}
+                                </table>
+                            </section>
+                    <section class="right-applylist">
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>学生</th>
+                                <th>课程名</th>
+                                <th>申请理由</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            {/if}
+                            <tbody>
+                            <tr>
+                                <td>{$i}</td>
+                                <td>{$data.stuName}</td>
+                                <td>{$data.courseName}</td>
+                                <td>{$data.reason}</td>
+                                <td>
+                                    <a href="javascript:;" class="pass" data-id="{$data.Id}">同意</a>
+                                    <a href="javascript:;" class="refuse" data-id="{$data.Id}">拒绝</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                            {/volist}
+                            {/if}
+                        </table>
+                    </section>
+                </div>
             </section>
         </main>
     </div>

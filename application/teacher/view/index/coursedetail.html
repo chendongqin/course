@@ -1,12 +1,560 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+    <title>课程详细</title>
+    {load href="/static/css/s_nav.css"/} {load href="/static/css/html-body-container.css"/} {load href="/static/css/s_mycourse.css"/}
+    {load href="/static/css/s_box-title.css"/}
+    {load href="/static/js/jq.js"/}
+    {load href="/static/js/teacher/index/detail.js"/}
     
+
+
+
+    <style>
+        .sec {
+            overflow: auto;
+            position: relative;
+
+        }
+
+        p,
+        a,
+        h4 {
+            display: inline-block;
+            text-decoration: none;
+        }
+        /* <!-- ==============================通知============================ --> */
+        .inform{
+            height: 200px;
+        }
+        
+
+        /* =======================资源中心内容部分=====================*/
+
+        .squrt_center {
+            width: 8px;
+            height: 8px;
+            background-color: rgb(167, 220, 255);
+            border-radius: 10%;
+            display: inline-block;
+            border-radius: 50%;
+            float: left;
+            margin-top: 21px;
+            margin-right: 20px;
+        }
+
+
+        .center_right {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 20px;
+            border-bottom: 1px dotted rgb(167, 220, 255);
+
+
+        }
+
+        .top_center_right p {
+            line-height: 30px;
+            font-size: 15px;
+
+        }
+
+        .center_right_one {
+            float: left;
+            margin-right: 20px;
+
+        }
+
+        .center_right_two {
+            float: right;
+            font-size: 12px;
+            color: rgb(184, 183, 183);
+        }
+
+        .center_right_three a {
+            width: 80px;
+            height: 20px;
+            font-size: 13px;
+            color: gold;
+        }
+
+        /* ========================================================== */
+
+        /* =======================作业管理内容部分=====================*/
+
+        .homeworkmake {
+            height: 550px;
+
+        }
+
+        .everywork {
+            margin-top: 20px;
+            width: 100%;
+            height: 140px;
+            padding: 10px 0px;
+            border-bottom: 2px dotted rgb(167, 220, 255);
+            border-top: 2px dotted rgb(167, 220, 255);
+
+        }
+
+        .work-circle {
+            width: 10px;
+            height: 10px;
+            background-color: gold;
+            display: inline-block;
+            border-radius: 50%;
+
+        }
+
+        .homework-text {
+            width: 70%;
+            height: 50px;
+            border: solid 1px rgb(201, 201, 201);
+            margin: 5px 0;
+
+        }
+
+        .homework-text-p {
+            text-indent: 3.5em;
+
+        }
+
+        .score {
+            height: 20px;
+            margin: 5px 0;
+        }
+
+        .score p {
+            margin-right: 50px;
+        }
+
+
+        /* =======================================留言区================== */
+
+        #message {
+            height: 450px;
+        }
+
+        .message {
+            /* border: solid 2px gold; */
+        }
+
+        .message-left {
+            float: left;
+            width: 63%;
+            /* border: solid 1px blue; */
+            border-right: solid 1px rgb(212, 212, 212);
+
+            overflow: auto;
+            padding: 5px 20px;
+            height: 408px;
+
+        }
+
+        .message-right {
+            height: 408px;
+            width: 37%;
+            float: right;
+            padding: 5px 20px;
+
+        }
+
+        .message-right textarea {
+            width: 100%;
+            height: 90%;
+        }
+
+        .sentmessage {
+            border: solid 1px rgb(204, 204, 204);
+            margin-top: 20px;
+        }
+
+
+
+        .liuyan {
+            display: block;
+            height: 30px;
+            padding: 5px 20px;
+            line-height: 30px;
+            border-bottom: 1px dotted rgb(167, 220, 255);
+        }
+
+        .liuyan h5 {
+            display: inline-block;
+            float: left;
+            margin: 0;
+        }
+
+        .liuyan p {
+            font-size: 10px;
+            color: rgb(190, 190, 190);
+            display: inline-block;
+            float: right;
+            margin: 0;
+        }
+
+        .liuyan-text {
+            display: inline-block;
+            width: 100%;
+            height: 50px;
+            /* border: solid 2px magenta; */
+            padding: 0 20px;
+        }
+
+        .liuyan-text p {
+            margin: 0;
+            text-indent: 2em;
+        }
+
+        .sentmessage input {
+            float: right;
+        }
+
+/* 弹窗 */
+.AA {
+            width: 400px;
+            background-color: white;
+            margin: auto;
+            display: none;
+
+        }
+
+        .title_add {
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            text-align: center;
+            display: inline-block;
+            width: 100%;
+            height: 30px;
+            line-height: 30px;
+            background-color: rgb(170, 217, 255);
+            color: white;
+        }
+
+        p {
+            display: inline-block;
+            font-size: 13px;
+        }
+
+        .contain {
+            padding: 20px 0;
+            text-align: center;
+            width: 398px;
+            border: solid 1px rgb(170, 217, 255);height: 100%;
+        }
+
+        .btn input {
+            margin: 5px 5px;
+            font-size: 12px;
+        }
+        #text_contain{
+            vertical-align: top;
+        }
+        .BB {
+            width: 400px;
+            background-color: white;
+            margin: auto;
+            display: none;
+        }
+        .CC {
+            width: 400px;
+            background-color: white;
+            margin: auto;
+            display: none;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <span class="nav_bth nav_bth_first">
+                    <img src="/static/image/logo.jpg" alt="logo">
+                </span>
+                <span class="nav_bth">
+                    <a href="/student">首页</a>
+                </span>
+                <span class="nav_bth">
+                    <a href="/student/index/mycourse">我的课程</a>
+                </span>
+                <span class="nav_bth">
+                    <a href="/student/index/course">课程列表</a>
+                </span>
+                <span class="nav_bth">
+                    <a href="/student/index/applylist">申请列表</a>
+                </span>
+                <span class="nav_bth">修改密码</span>
+                <a class="nav_bth" href="/index/index/logout?channel=teacher">登出</a>
+            </nav>
+
+        </header>
+
+        <main>
+            <!-- =============================课程========================== -->
+            <section>
+                <div class="sec_left">
+                    <li class="course">
+                        <div class="course_img">
+                            <img src="/static/image/css.jpg" alt="logo">
+                        </div>
+                        <div class="text">
+                            <span class="span_one">
+                                <h4>{$course.name}</h4>
+                                <p>{$teacher.name}</p>
+                            </span>
+                            <span class="span_two">
+                                <p>好好学习</p>
+                                <p>推荐指数：5</p>
+                            </span>
+                        </div>
+                    </li>
+                </div>
+
+                <div class="sec_right">
+
+                    <div class="sec_right_text">
+                        <h3>课程名称：{$course.name}</h3>
+                    </div>
+                    <div class="sec_right_text">
+                        <h4>任教老师：{$teacher.name}</h4>
+                        <p>联系方式：{$teacher.email}</p>
+                    </div>
+                    <div class="sec_right_text">
+                        <p>开课时间：{php}echo date('Y-m-d',$course['start_time']);{/php}</p>
+                        <p>结束时间：{php}echo date('Y-m-d',$course['end_time']);{/php}</p>
+                    </div>
+                    <div class="sec_right_text">
+                        <h4>课程简介：</h4>
+                    </div>
+                    <div class="sec_right_text  sec_right_text_p">
+                        <p>{$course.describe}</p>
+                    </div>
+                </div>
+
+            </section>
+            <!-- ==============================通知============================ -->
+            <section class="sec inform">
+                    <span class="top_title">
+                        <h4>通知</h4>
+                        <p><input type="button" class="issue" id="issue_inform" value="发布通知"></p>
+                    </span>
+                    <!-- 弹窗 -->
+                    <div class="AA">
+                        <span class="title_add">
+                            发布通知
+                        </span>
+                        <section class="contain">
+                            
+                            <p class="text_code">标题：</p>
+                            <input type="text" class="inform_title"><br>
+                            <p class="text_code">内容：</p>
+                            <textarea name="container" id="text_contain" cols="20" rows="5"></textarea>
+                            
+                            <div class="btn">
+                                <input class="btn_sure" type="submit" value="发布">
+                                <input class="btn_cancle" type="button" value="取消">
+                
+                            </div>
+                        </section>
+                    </div>
+            </section>
+  <!-- 弹窗 -->
+  <div class="AA">
+    <span class="title_add">
+        发布通知
+    </span>
+    <section class="contain">
+        
+        <p class="text_code">标题：</p>
+        <input type="text" class="inform_title"><br>
+        <p class="text_code">内容：</p>
+        <textarea name="container" id="text_contain" cols="20" rows="5"></textarea>
+        
+        <div class="btn">
+            <input class="btn_sure" type="submit" value="发布">
+            <input class="btn_cancle" type="button" value="取消">
+
+        </div>
+    </section>
+</div>
+
+            <!-- =============================资源中心========================== -->
+
+            <section class="sec">
+                <span class="top_title">
+                    <h4>资源中心</h4>
+                    <p>      <input type="button" class="issue" id="issue_resource" value="发布资源"></p>
+                </span>
+                <div class="BB">
+                    <span class="title_add">
+                        上传课件
+                    </span>
+                    <section class="contain">
+                        <form action="/teacher/resource/add" method="post"  enctype="multipart/form-data">
+                        <p class="text_code">标题：</p>
+                        <input type="text" name="name" class="">
+                        <input type="hidden" name="courseId"  value="{$course.Id}" class="">
+                        <input type="file" name="coursewareFile" class="">
+                        <div class="btn">
+                            <input class="btn_sure" type="submit" value="发布">
+                            <input id="btn_cancle_resource" type="button" value="取消">
+                        </div>
+                        </form>
+                    </section>
+                </div>
+
+
+                <section class="contain">
+                    {if condition="!empty($coursewares)"}
+                    {volist name="coursewares" id="courseware"}
+                    <div class="center_right">
+                        <span class="squrt_center "></span>
+                        <p class="center_right_one">{$courseware.name}</p>
+                        <p class="center_right_two">{php}echo date('Y-m-d',$courseware['create_time']);{/php}</p>
+                        <p class="center_right_three">
+                            <a href="/student/resource/down?id={$courseware.Id}" class="">下载</a>
+                        </p>
+                    </div>
+                    {/volist}
+                    {/if}
+                </section>
+
+
+            </section>
+            <!-- =============================作业管理========================== -->
+
+            <section class=" sec homeworkmake">
+                <span class="top_title ">
+                    <h4>作业管理</h4>
+                    <p>
+                <input type="button" class="issue" id = 'issue_homework' value="发布作业">
+                </p>
+                </span>
+                <div class="CC">
+                    <span class="title_add">
+                        上传作业
+                    </span>
+                    <section class="contain">
+                        <form action="/teacher/task/add" method="post"  enctype="multipart/form-data">
+                            <input type="hidden" value="{$course.Id}" name="courseId">
+                            <p class="text_code">标题：</p>
+                            <input type="text" name="name" class=""><br>
+                            <p class="text_code">分数：</p>
+                            <input type="text" name="score" class=""><br>
+                            <p class="text_code">截至时间：</p>
+                            <input type="text" name="lastTime" class=""><br>
+                            <div><input type="file" name="taskJobFile" class=""></div>
+                            <p class="text_code">内容：</p>
+                            <textarea name="describe"  cols="20" rows="5"></textarea>
+                            <div class="btn">
+                                <input class="btn_sure" type="submit" value="发布">
+                                <input id="btn_cancle_homework" type="button" value="取消">
+
+                            </div>
+                        </form>
+                    </section>
+                </div>
+
+                {if condition="!empty($tasks)"}
+                {volist name="tasks" id="task"}
+
+                <div class="everywork">
+                    <span class="work-circle"></span>
+                    <h4>作业：</h4>
+                    <div class="homework-text">
+                        <p class="homework_title">标题:</p><span class="homework_title_text">{$task.name}</span><br>
+                        <p class="homework_detail">描述:</p><span class="homework_detail_text">{$task.describe}</span>
+                    </div>
+                    <p><a href="/teacher/task?taskId={$task.Id}">批改</a></p>
+                    <!-- <input type="file">
+                    <input type="submit" value="提交"> -->
+
+                    <div class="score">
+                        <p class="totle-score">
+                            <b>总分：</b>{$task.score}</p>
+                        
+                    </div>
+                    {/volist}
+                    {/if}
+                </div>
+            </section>
+            <!-- =============================留言区========================== -->
+
+            <section id="message">
+                <span class="top_title">
+                    <h4>留言区</h4>
+                    <!-- <p>MORE
+                        <<</p> -->
+                </span>
+                <input type="hidden" value="{$course.Id}" id="questionCourseId">
+                <div>
+                    <div class="message">
+                        <div class="message-left">
+                            <input type="text" id="questionText" placeholder="请输入你要搜索的关键字">
+                            <input type="button" id="questionSearch" value="搜索">
+                            <div id="question">
+
+                            </div>
+                        </div>
+                        <div class="message-right">
+                            <textarea name="" id="" cols="30" rows="10" placeholder="请输入你的问题"></textarea>
+                            <input type="button" value="提交">
+
+
+                        </div>
+
+                    </div>
+            </section>
+
+        </main>
+        </div>
+        <script>
+            var issue_inform = document.getElementById('issue_inform')
+            
+            var AA = document.getElementsByClassName('AA')[0];
+        
+            var btn_cancle = document.getElementsByClassName("btn_cancle")[0]
+            
+            issue_inform.onclick = function () {
+                AA.style.display = 'block';
+            }
+            btn_cancle.onclick = function () {
+                AA.style.display = 'none';
+            }
+
+
+            var issue_resource = document.getElementById('issue_resource');
+            var BB = document.getElementsByClassName('BB')[0];
+            var btn_cancle_resource = document.getElementById("btn_cancle_resource")
+            issue_resource.onclick = function () {
+                BB.style.display = 'block';
+            }
+            btn_cancle_resource.onclick = function () {
+                BB.style.display = 'none';
+            }
+
+
+            var issue_homework = document.getElementById('issue_homework')
+                var CC = document.getElementsByClassName('CC')[0];
+                var btn_cancle_homework = document.getElementById('btn_cancle_homework')
+            
+           
+                issue_homework.onclick = function () {
+                    CC.style.display = 'block';
+                }
+                btn_cancle_homework.onclick = function () {
+                    CC.style.display = 'none';
+                }
+            </script>
 </body>
+
 </html>

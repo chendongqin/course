@@ -302,12 +302,13 @@
                 {volist name="coursewares" id="courseware"}
                     <div class="center_right">
                         <span class="squrt_center "></span>
-                        <p class="center_right_one">{courseware.name}</p>
+                        <p class="center_right_one">{$courseware.name}</p>
                         <p class="center_right_two">{php}echo date('Y-m-d',$courseware['create_time']);{/php}</p>
                         <p class="center_right_three">
                             <a href="/student/resource/down?id={$courseware.Id}" class="">下载</a>
                         </p>
                     </div>
+                {/volist}
                 {/if}
 
             </section>
@@ -326,10 +327,14 @@
                     <h4>作业：</h4>
                     <div class="homework-text">
                         <p class="homework-text-p">{$task.name}</p>
+                        <p>{php}echo empty($task['thumb'])?'':'<a href="/student/task/down?id='.$task['Id'].'">下载</a>';{/php}</p>
+                        <p>{php}echo empty($task['thumb'])?'':'<a href="/student/task/see?id='.$task['Id'].'" target="_blank" >查看</a>';{/php}</p>
                     </div>
                     {if condition="empty($task['task'])"}
-                    <input type="file">
-                    <input type="submit" value="提交">
+                    <form method="post" action="/student/task/add?task_id={$task.Id}" enctype="multipart/form-data">
+                        <input type="file" name="taskFile">
+                        <input type="submit" value="提交">
+                    </form>
                     {/if}
                     <div class="score">
                         <p class="totle-score">
@@ -338,6 +343,7 @@
                             <b>得分：</b>{php}echo (empty($task['task']) or $task['task']['correct_time']==0)?'未修改':$task['task']['score']{/php}</p>
                     </div>
                 </div>
+                {/volist}
                 {/if}
             </section>
             <!-- =============================留言区========================== -->
@@ -352,8 +358,8 @@
                 <div>
                     <div class="message">
                         <div class="message-left">
-                            <input type="text" placeholder="请输入你要搜索的关键字">
-                            <input type="button" value="搜索">
+                            <input type="text" id="questionText" placeholder="请输入你要搜索的关键字">
+                            <input type="button" id="questionSearch" value="搜索">
                             <div id="question">
 
                             </div>

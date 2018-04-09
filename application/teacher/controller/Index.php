@@ -25,6 +25,8 @@ class Index extends Teacherbase{
         foreach ($applys as $key=>$apply){
             $course = Db::name('courses')->where('Id',$apply['course_id'])->find();
             $applys[$key]['courseName'] = $course['name'];
+            $student = Db::name('students')->where('Id',$apply['stu_id'])->find();
+            $applys[$key]['stuName'] = $student['name'];
         }
         $this->assign('applys',$applys);
         return $this->fetch();
@@ -64,17 +66,21 @@ class Index extends Teacherbase{
         $request = $this->request;
         $add['name'] = $request->param('name','','string');
         if(empty($add['name']))
-            return $this->returnJson('课程名不能为空');
+//            return $this->returnJson('课程名不能为空');
+            return $this->error('课程名不能为空');
         $add['credit'] = $request->param('credit','','string');
         if(!is_numeric($add['credit']))
-            return $this->returnJson('学分数据不正确');
+//            return $this->returnJson('学分数据不正确');
+            return $this->error('学分数据不正确');
         $add['image'] = $request->param('image','','string');
         if(!empty($add['image']) and !file_exists(PUBLIC_PATH.$add['image']))
-            return $this->returnJson('图片不存在');
+            return $this->error('图片不存在');
+//            return $this->returnJson('图片不存在');
         $add['start_time'] = strtotime($request->param('start_time','','string'));
         $add['end_time'] = strtotime($request->param('end_time','','string'));
         if($add['start_time'] >$add['end_time'])
-            return $this->returnJson('开始时间不能大于结束时间');
+            return $this->error('开始时间不能大于结束时间');
+//            return $this->returnJson('开始时间不能大于结束时间');
         $add['describe'] = $request->param('describe','','string');
         $add['teacher_id'] = $user['Id'];
         $add['create_time'] = time();
@@ -87,8 +93,10 @@ class Index extends Teacherbase{
         $add['code'] = $code;
         $res = Db::name('courses')->insert($add);
         if($res)
-          return $this->returnJson('创建课程成功',true,1);
-        return $this->returnJson('创建失败');
+          return $this->success('创建课程成功');
+//          return $this->returnJson('创建课程成功',true,1);
+        return $this->error('创建失败');
+//        return $this->returnJson('创建失败');
     }
 
     public function mycourse(){
@@ -118,15 +126,12 @@ class Index extends Teacherbase{
         $courseId = $request->param('id','','int');
         $page = $request->param('page',1,'int');
         $user = $this->getUser();
-        $myJoin = Db::name('course_students')->where(['course_id'=>$courseId,'stu_id'=>$user['Id']])->find();
-        if(empty($myJoin)){
-            $this->assign('error','您没有加入该课程');
-            return $this->fetch(APP_PATH.'index/view/index/error.html');
-        }
         $course = Db::name('courses')->where('Id',$courseId)->find();
         $this->assign('course',$course);
-        $teacher = Db::name('teacher')->where('Id',$course['teacher_id'])->find();
-        $this->assign('teacher',$teacher);
+        if($user['Id']!=$course['teacher_id']){
+            $this->assign('error','您不是创建者');
+            return $this->fetch(APP_PATH.'index/view/index/error.html');
+        }
         $messageModel = Db::name('message');
         $where = ['father_id'=>0,'course_id'=>$courseId];
         $question = $this->request->param('question','','string');
@@ -198,7 +203,7 @@ class Index extends Teacherbase{
         $apply = Db::name('apply')->where('Id',$id)->find();
         if(empty($apply))
             return $this->returnJson('申请不存在');
-        $course = Db::name('course')->where('Id',$apply['course_id'])->find();
+        $course = Db::name('courses')->where('Id',$apply['course_id'])->find();
         if(empty($course))
             return $this->returnJson('课程不存在');
         if($course['teacher_id']!=$user['Id'])
@@ -227,7 +232,7 @@ class Index extends Teacherbase{
         $apply = Db::name('apply')->where('Id',$id)->find();
         if(empty($apply))
             return $this->returnJson('申请不存在');
-        $course = Db::name('course')->where('Id',$apply['course_id'])->find();
+        $course = Db::name('courses')->where('Id',$apply['course_id'])->find();
         if(empty($course))
             return $this->returnJson('课程不存在');
         if($course['teacher_id']!=$user['Id'])
@@ -243,11 +248,51 @@ class Index extends Teacherbase{
     }
 
     public function coursedetail(){
+        $user = $this->getUser();
+        $request = $this->request;
+        $courseId = $request->param('id','','int');
+        $course = Db::name('courses')->where('Id',$courseId)->find();
+        if(empty($course))
+            return $this->fetch(APP_PATH.'index/view/index/error.html',['error'=>'课程不存在']);
+        $this->assign('course',$course);
+        if($user['Id']!= $course['teacher_id'])
+            return $this->fetch(APP_PATH.'index/view/index/error.html',['error'=>'您没有权限查看']);
+        $courseware = Db::name('courseware')->where('Id',$courseId)->select();
+        $this->assign('coursewares',$courseware);
+        $taskJobs = Db::name('task_job')
+            ->where('course_id',$courseId)
+            ->order('create_time')
+            ->select();
+        $this->assign('tasks',$taskJobs);
         return $this->fetch();
+    }
+    public function questionJson(){
+        $request = $this->request;
+        $courseId = $request->param('id','','int');
+        $user = $this->getUser();
+        $course = Db::name('courses')->where('Id',$courseId)->find();
+        $this->assign('course',$course);
+        if($user['Id']!=$course['teacher_id'])
+            return $this->returnJson('您没有权限');
+        $messageModel = Db::name('message');
+        $where = ['father_id'=>0,'course_id'=>$courseId];
+        $question = $this->request->param('question','','string');
+        if(!empty($question))
+            $where['msg'] = ['like','%'.$question.'%'];
+        $question = $messageModel->where($where)
+            ->order('create_time','asc')
+            ->select();
+        foreach ($question as $key=>$data){
+            $table = $data['is_teacher']==1?'teachers':'students';
+            $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
+            $question[$key]['user_name'] = $userName;
+        }
+        return $this->returnJson('获取成功',true,1,$question);
     }
 
     public function chat(){
         return $this->fetch();
     }
+
 
 }

@@ -2,9 +2,141 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>学生作业</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>作业批改</title>
+    {load href="/static/css/s_nav.css"/}
+    {load href="/static/css/html-body-container.css"/}
+    {load href="/static/css/model.css" /}
+    {load href="/static/js/jq.js" /}
+    {load href="/static/js/model.js" /}
+    {load href="/static/js/teacher/taskjob.js" /}
+    <style>
+        .homework_content{
+            width: 750px;
+            margin: 0 auto;
+            height: 100%;
+            border: solid 1px rgb(204, 204, 204);
+        }
+        .text_homework{
+            display: inline-block;
+            width: 100px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            letter-spacing: 5px;
+            margin: 10px 0;
+
+        }
+        .homework_title{
+            width: 300px;
+        }
+        .homework_detail{
+            width: 500px;
+            height: 100px;
+            vertical-align: top;
+        }
+        form table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        form table td,th{
+            padding: 5px;
+            width: 150px;
+            border: solid 1px rgb(204, 203, 203);
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+        }
+
+    </style>
 </head>
 <body>
+<div class="container">
+    <header>
+        <nav>
+                        <span class="nav_bth nav_bth_first">
+                            <img src="/static/image/logo.jpg" alt="logo">
+                        </span>
+            <span class="nav_bth">
+                            <a href="/">首页</a>
+                        </span>
+            <span class="nav_bth">
+                            <a href="/teacher/index/mycourse">我的课程</a>
+                        </span>
+            <span class="nav_bth">
+                            <a href="/teacher/index/applylist">课程申请</a>
+                        </span>
+            <span class="nav_bth">
+                            <a href="/teacher/index/changepwd">修改密码</a>
+                        </span>
+            <a class="nav_bth" href="/index/index/logout?channel=teacher">退出</a>
+        </nav>
 
+    </header>
+    <main>
+        <div class="homework_content">
+            <p class="text_homework">题目:</p>
+            <input type="text" class="homework_title" value="{$taskJob.name}"><br>
+            <p class="text_homework">描述:</p>
+            <input type="text"  class="homework_detail" value="{$taskJob.describe}">
+        </div>
+
+        <form action="">
+            <table>
+                <caption><h3>作业成绩</h3></caption>
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>姓名</th>
+                    <th>学号</th>
+                    <th>提交时间</th>
+                    <th>成绩</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                {if condition="!empty($tasks)"}
+                {volist name="tasks" id="task"}
+                <thead>
+                <tr>
+                    <td>{$i}</td>
+                    <td>{$task.userName}</td>
+                    <td>{$task.stu_no}</td>
+                    <td>{php}echo date('Y-m-d H:i:s',$task['create_time']);{/php}</td>
+                    <td>{php}echo $task['correct_time']==0?'未修改':$task['score'];{/php}</td>
+                    <td>
+                        <a href="javascript:;" class="correctTask" data-id="{$task.Id}">批改</a>
+                        <a href="/teacher/task/check?id={$task.Id}" class="correctTask" target="_blank">查看</a>
+                    </td>
+                </tr>
+                </thead>
+                {/volist}
+                {/if}
+            </table>
+        </form>
+    </main>
+</div>
+<div class="modal fade" id="modeltaskJob">
+    <div class="modal-dialog custom-modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">批改作业</h4>
+            </div>
+            <div id="error" style="display: none;color: red">
+                <span class="tc_error"></span>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-groups-bordered form-static" id="scoreForm">
+                    <input type="text" placeholder="输入成绩" name="modal_score" id="modal_score">
+                    <input type="text" placeholder="输入批注" name="modal_remark" id="modal_remark">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="button"  id="sureScoreButton" value="批改" >
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

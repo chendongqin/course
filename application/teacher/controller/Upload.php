@@ -45,6 +45,8 @@ class Upload extends Teacherbase{
         return $this->returnJson('上传成功',true,1,['fileName'=>$file]);
     }
 
+
+
     public function taskjob(){
         $upload = new kuUpload();
         $upload->setSupportResource(array());
