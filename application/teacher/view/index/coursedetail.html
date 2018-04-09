@@ -304,7 +304,7 @@
                 <div class="sec_left">
                     <li class="course">
                         <div class="course_img">
-                            <img src="/static/image/css.jpg" alt="logo">
+                            <img src="{php}echo empty($course['image'])?'/static/image/css.jpg':$course['image']{/php}" alt="logo">
                         </div>
                         <div class="text">
                             <span class="span_one">
