@@ -192,8 +192,14 @@ class Index extends Teacherbase{
         $page = (int)$this->request->param('page',1,'int');
         $user = $this->getUser();
         $courseIds = Db::name('courses')->where(['teacher_id'=>$user['Id'],'end_time'=>['>',time()]])->column('Id');
-        $applys = Db::name('apply')->where('course_id','in',$courseIds)->paginate(15,false,['page'=>$page]);
-        $this->assign('pager',$applys->toArray());
+        $applys = Db::name('apply')->where('course_id','in',$courseIds)->paginate(15,false,['page'=>$page])->toArray();
+        foreach ($applys['data'] as $key=>$apply){
+            $user = Db::name('students')->where('Id',$apply['stu_id'])->find();
+            $applys['data'][$key]['stuName'] = $user['name'];
+            $course = Db::name('course')->where('Id',$apply['course_id'])->find();
+            $applys['data'][$key]['courseName'] = $course['name'];
+        }
+        $this->assign('pager',$applys);
         return $this->fetch();
     }
 
