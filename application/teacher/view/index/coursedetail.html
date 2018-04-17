@@ -15,6 +15,13 @@
 
 
     <style>
+        body{
+            height: 100%;
+            position: relative;
+        }
+        html{
+            height: 100%;
+        }
         .sec {
             overflow: auto;
             position: relative;
@@ -97,8 +104,8 @@
             width: 100%;
             height: 140px;
             padding: 10px 0px;
-            border-bottom: 2px dotted rgb(167, 220, 255);
-            border-top: 2px dotted rgb(167, 220, 255);
+            /* border-bottom: 1px dotted rgb(167, 220, 255); */
+            /* border-top: 1px dotted rgb(167, 220, 255); */
 
         }
 
@@ -112,8 +119,9 @@
         }
 
         .homework-text {
-            width: 70%;
-            height: 50px;
+            padding: 10px;
+            width:100%;
+            height: 70px;
             border: solid 1px rgb(201, 201, 201);
             margin: 5px 0;
 
@@ -128,9 +136,44 @@
             height: 20px;
             margin: 5px 0;
         }
+        .totle-score{
+            font-size: 16px;
+        }
 
         .score p {
             margin-right: 50px;
+        }
+        .pigai{
+            background-color:rgb(162, 224, 248);
+            width:40px;
+            height:20px;
+            text-align:center;
+            line-height:20px;
+            border-radius: 5px;
+            float: right;
+            margin-right: 5px;
+            
+        }
+        .delet{
+            background-color:rgb(248, 73, 73);
+            width:40px;
+            height:20px;
+            text-align:center;
+            line-height:20px;
+            border-radius: 5px;
+            float: right;
+            color: white;
+            margin-right: 5px;
+            
+        }
+        .homework_title_text,.homework_detail_text{
+            font-size: 13px;
+        }
+        .update_time{
+            float: right;
+            margin-right: 5px;
+            color: rgb(175, 175, 175);
+
         }
 
 
@@ -216,12 +259,26 @@
         }
 
 /* 弹窗 */
+.AAbig{
+    width: 1200px;
+    height: 1500px;
+    position: relative;
+    display: none;
+    background-color: rgb(218, 218, 218);
+    opacity: 0.5;
+    position: fixed;
+}
 .AA {
             width: 400px;
-            background-color: white;
             margin: auto;
             display: none;
-
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            position:absolute;
+            top:300px;
+            left:450px;
+            background-color:white;
+            z-index:999;
         }
 
         .title_add {
@@ -229,7 +286,7 @@
             border-top-right-radius: 20px;
             text-align: center;
             display: inline-block;
-            width: 100%;
+            width: 400px;
             height: 30px;
             line-height: 30px;
             background-color: rgb(170, 217, 255);
@@ -241,10 +298,10 @@
             font-size: 13px;
         }
 
-        .contain {
+        .contain_sec{
             padding: 20px 0;
             text-align: center;
-            width: 398px;
+            width: 400px;
             border: solid 1px rgb(170, 217, 255);height: 100%;
         }
 
@@ -255,17 +312,31 @@
         #text_contain{
             vertical-align: top;
         }
+      
         .BB {
             width: 400px;
-            background-color: white;
             margin: auto;
             display: none;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            position:absolute;
+            top:750px;
+            left:450px;
+            background-color:white;
+            z-index:999;
         }
+        
         .CC {
             width: 400px;
-            background-color: white;
             margin: auto;
             display: none;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            position:absolute;
+            top:1100px;
+            left:450px;
+            background-color:white;
+            z-index:999;
 
         }
 
@@ -275,6 +346,68 @@
 
 <body>
     <div class="container">
+         <!-- 弹窗 -->
+         <div class="AAbig" style="z-index:1;"></div>
+
+  <div class="AA" >
+        <span class="title_add">
+            发布通知
+        </span>
+        <section class="contain_sec">
+            <p class="text_code">标题：</p>
+            <input type="text" class="inform_title"><br> 
+            <p class="text_code">内容：</p>
+            <textarea name="container" id="text_contain" cols="20" rows="5"></textarea>
+            <div class="btn">
+                <input class="btn_sure" type="submit" value="发布">
+                <input class="btn_cancle" type="button" value="取消">
+            </div>
+        </section>
+    </div>
+
+    <div class="BB">
+            <span class="title_add">
+                上传课件
+            </span>
+            <section class="contain_sec">
+                <form action="/teacher/resource/add" method="post"  enctype="multipart/form-data">
+                <p class="text_code">标题：</p>
+                <input type="text" name="name" class="">
+                <input type="hidden" name="courseId"  value="{$course.Id}" class="">
+                <input type="file" name="coursewareFile" class="">
+                <div class="btn">
+                    <input class="btn_sure" type="submit" value="发布">
+                    <input id="btn_cancle_resource" type="button" value="取消">
+                </div>
+                </form>
+            </section>
+        </div>
+
+        <div class="CC">
+                <span class="title_add">
+                    上传作业
+                </span>
+                <section class="contain_sec">
+                    <form action="/teacher/task/add" method="post"  enctype="multipart/form-data">
+                        <input type="hidden" value="{$course.Id}" name="courseId">
+                        <p class="text_code">标题：</p>
+                        <input type="text" name="name" class=""><br>
+                        <p class="text_code">分数：</p>
+                        <input type="text" name="score" class=""><br>
+                        <p class="text_code">截至时间：</p>
+                        <input type="text" name="lastTime" class=""><br>
+                        <div><input type="file" name="taskJobFile" class=""></div>
+                        <p class="text_code">内容：</p>
+                        <textarea name="describe"  cols="20" rows="5"></textarea>
+                        <div class="btn">
+                            <input class="btn_sure" type="submit" value="发布">
+                            <input id="btn_cancle_homework" type="button" value="取消">
+
+                        </div>
+                    </form>
+                </section>
+            </div>
+
         <header>
             <nav>
                 <span class="nav_bth nav_bth_first">
@@ -367,25 +500,7 @@
                         </section>
                     </div>
             </section>
-  <!-- 弹窗 -->
-  <div class="AA">
-    <span class="title_add">
-        发布通知
-    </span>
-    <section class="contain">
-        
-        <p class="text_code">标题：</p>
-        <input type="text" class="inform_title"><br>
-        <p class="text_code">内容：</p>
-        <textarea name="container" id="text_contain" cols="20" rows="5"></textarea>
-        
-        <div class="btn">
-            <input class="btn_sure" type="submit" value="发布">
-            <input class="btn_cancle" type="button" value="取消">
-
-        </div>
-    </section>
-</div>
+ 
 
             <!-- =============================资源中心========================== -->
 
@@ -394,26 +509,8 @@
                     <h4>资源中心</h4>
                     <p>      <input type="button" class="issue" id="issue_resource" value="发布资源"></p>
                 </span>
-                <div class="BB">
-                    <span class="title_add">
-                        上传课件
-                    </span>
-                    <section class="contain">
-                        <form action="/teacher/resource/add" method="post"  enctype="multipart/form-data">
-                        <p class="text_code">标题：</p>
-                        <input type="text" name="name" class="">
-                        <input type="hidden" name="courseId"  value="{$course.Id}" class="">
-                        <input type="file" name="coursewareFile" class="">
-                        <div class="btn">
-                            <input class="btn_sure" type="submit" value="发布">
-                            <input id="btn_cancle_resource" type="button" value="取消">
-                        </div>
-                        </form>
-                    </section>
-                </div>
 
-
-                <section class="contain">
+           <section class="contain" style="border:none;">
                     {if condition="!empty($coursewares)"}
                     {volist name="coursewares" id="courseware"}
                     <div class="center_right">
@@ -439,50 +536,24 @@
                 <input type="button" class="issue" id = 'issue_homework' value="发布作业">
                 </p>
                 </span>
-                <div class="CC">
-                    <span class="title_add">
-                        上传作业
-                    </span>
-                    <section class="contain">
-                        <form action="/teacher/task/add" method="post"  enctype="multipart/form-data">
-                            <input type="hidden" value="{$course.Id}" name="courseId">
-                            <p class="text_code">标题：</p>
-                            <input type="text" name="name" class=""><br>
-                            <p class="text_code">分数：</p>
-                            <input type="text" name="score" class=""><br>
-                            <p class="text_code">截至时间：</p>
-                            <input type="text" name="lastTime" class=""><br>
-                            <div><input type="file" name="taskJobFile" class=""></div>
-                            <p class="text_code">内容：</p>
-                            <textarea name="describe"  cols="20" rows="5"></textarea>
-                            <div class="btn">
-                                <input class="btn_sure" type="submit" value="发布">
-                                <input id="btn_cancle_homework" type="button" value="取消">
-
-                            </div>
-                        </form>
-                    </section>
-                </div>
+               
 
                 {if condition="!empty($tasks)"}
                 {volist name="tasks" id="task"}
 
                 <div class="everywork">
                     <span class="work-circle"></span>
-                    <h4>作业：</h4>
+                    <h4>作业1</h4>    <p class="totle-score"><b style="font-size:16px;">总分:</b>{$task.score}</p>
+                    <a href="javascript:;" class="delet" data-id="{$task.Id}">删除</a>
+                    
+                    <p class="pigai"><a style="color:white;" href="/teacher/task?taskId={$task.Id}">批改</a></p>
                     <div class="homework-text">
-                        <p class="homework_title">标题:</p><span class="homework_title_text">{$task.name}</span><br>
-                        <p class="homework_detail">描述:</p><span class="homework_detail_text">{$task.describe}</span>
+                        <p class="homework_title"><b>标题:</b></p><span class="homework_title_text">{$task.name}</span>
+                        <p class="update_time">{php}echo date('Y-m-d',$task['create_time']);{/php}</p><br>
+                        <p class="homework_detail"><b>描述:</b></p><span class="homework_detail_text">{$task.describe}</span>
                     </div>
-                    <p><a href="/teacher/task?taskId={$task.Id}">批改</a></p>
-                    <!-- <input type="file">
-                    <input type="submit" value="提交"> -->
+        
 
-                    <div class="score">
-                        <p class="totle-score">
-                            <b>总分：</b>{$task.score}</p>
-                        
-                    </div>
                     {/volist}
                     {/if}
                 </div>
@@ -506,8 +577,8 @@
                             </div>
                         </div>
                         <div class="message-right">
-                            <textarea name="" id="" cols="30" rows="10" placeholder="请输入你的问题"></textarea>
-                            <input type="button" value="提交">
+                            <textarea name="" id="pushString" cols="30" rows="10" placeholder="请输入你的问题"></textarea>
+                            <input type="button" id="pushQuestion" value="提交">
 
 
                         </div>
@@ -519,26 +590,30 @@
         </div>
         <script>
             var issue_inform = document.getElementById('issue_inform')
-            
             var AA = document.getElementsByClassName('AA')[0];
-        
-            var btn_cancle = document.getElementsByClassName("btn_cancle")[0]
             
+            var AAbig = document.getElementsByClassName('AAbig')[0];
+
+            var btn_cancle = document.getElementsByClassName("btn_cancle")[0]
             issue_inform.onclick = function () {
                 AA.style.display = 'block';
+                AAbig.style.display = 'block';
             }
             btn_cancle.onclick = function () {
                 AA.style.display = 'none';
+                AAbig.style.display = 'none';
+                
             }
-
 
             var issue_resource = document.getElementById('issue_resource');
             var BB = document.getElementsByClassName('BB')[0];
             var btn_cancle_resource = document.getElementById("btn_cancle_resource")
             issue_resource.onclick = function () {
+                AAbig.style.display = 'block';
                 BB.style.display = 'block';
             }
             btn_cancle_resource.onclick = function () {
+                AAbig.style.display = 'none';
                 BB.style.display = 'none';
             }
 
@@ -549,9 +624,11 @@
             
            
                 issue_homework.onclick = function () {
+                AAbig.style.display = 'block';
                     CC.style.display = 'block';
                 }
                 btn_cancle_homework.onclick = function () {
+                AAbig.style.display = 'none';
                     CC.style.display = 'none';
                 }
             </script>

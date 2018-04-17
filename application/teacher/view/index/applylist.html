@@ -4,9 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <title>申请列表</title>
-    {load href="/static/js/jq.js" /}
-    {load href="/static/js/teacher/index/apply.js" /}
-    {load href="/static/css/s_nav.css"/} {load href="/static/css/html-body-container.css"/}
+    {load href="/static/js/jq.js" /} {load href="/static/js/teacher/index/apply.js" /} {load href="/static/css/s_nav.css"/} {load
+    href="/static/css/html-body-container.css"/} 
+    <!-- {load href="/static/css/font-awesome.min.css"/} -->
+
     <style>
         .applylist {
             width: 100%;
@@ -31,69 +32,79 @@
             border-collapse: collapse;
 
         }
-        caption h1{
+
+        caption h1 {
             text-align: center;
+        }
+
+        .A {
+            color: green;
+        }
+
+        .B {
+            color: red;
         }
     </style>
 </head>
 
 <body>
-<div class="container">
-    <header>
-        <nav>
+    <div class="container">
+        <header>
+            <nav>
                 <span class="nav_bth nav_bth_first">
                     <img src="/static/image/logo.jpg" alt="logo">
                 </span>
-            <span class="nav_bth">
+                <span class="nav_bth">
                     <a href="/">首页</a>
                 </span>
-            <span class="nav_bth">
+                <span class="nav_bth">
                     <a href="/teacher/index/mycourse">我的课程</a>
                 </span>
-            <span class="nav_bth">
+                <span class="nav_bth">
                     <a href="/teacher/index/applylist">课程申请</a>
                 </span>
-            <span class="nav_bth">
+                <span class="nav_bth">
                     <a href="/teacher/index/changepwd">修改密码</a>
                 </span>
-            <a class="nav_bth" href="/index/index/logout?channel=teacher">退出</a>
-        </nav>
+                <a class="nav_bth" href="/index/index/logout?channel=teacher">退出</a>
+            </nav>
 
-    </header>
-    <main>
-        <div class="applylist">
+        </header>
+        <main>
+            <div class="applylist">
 
-            <table>
-                <caption><h1>学生课程申请列表</h1></caption>
-                <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>学生</th>
-                    <th>课程名</th>
-                    <th>申请理由</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                {if condition="!empty($pager['data'])"}
-                {volist name="pager.data" id="data"}
+                <table>
+                    <caption>
+                        <h1>学生课程申请列表</h1>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>学生</th>
+                            <th>课程名</th>
+                            <th>申请理由</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    {if condition="!empty($pager['data'])"} {volist name="pager.data" id="data"}
 
-                <tbody>
-                <tr>
-                    <td>{$i}</td>
-                    <td>{$data.stuName}</td>
-                    <td>{$data.courseName}</td>
-                    <td>{$data.reason}</td>
-                    <td>
-                        <a href="javascript:;" class="pass" data-id="{$data.Id}">同意</a>
-                        <a href="javascript:;" class="refuse" data-id="{$data.Id}">拒绝</a>
-                    </td>
-                </tr>
-                </tbody>
-                {/volist} {/if}
+                    <tbody>
+                        <tr>
+                            <td>{$i}</td>
+                            <td>{$data.stuName}</td>
+                            <td>{$data.courseName}</td>
+                            <td>{$data.reason}</td>
+                            <td>
+                                <a href="javascript:;" class="pass" class=" A fa fa-check" title="通过" data-id="{$data.Id}">同意</a>
+                                <a href="javascript:;" class="refuse" class=" B fa fa-close" title="删除" data-id="{$data.Id}">拒绝</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    {/volist} {/if}
 
-    </main>
+        </main>
 
-</div>
+        </div>
 </body>
 
 </html>

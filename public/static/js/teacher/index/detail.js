@@ -3,6 +3,33 @@ $(function () {
     getQuestion(id);
 });
 
+$(function () {
+   $('.delet').click(function () {
+       var id = $(this).attr('data-id');
+       $.post('/teacher/task/delTaskjob',{id:id},function (json) {
+           if(json.status == true){
+               location.reload();
+           }else{
+               alert(json.msg);
+           }
+       })
+   }) ;
+});
+
+$(function () {
+   $('#pushQuestion').click(function () {
+       var id= $('#questionCourseId').val();
+      var msg = $('#pushString').val();
+      $.post('/teacher/index/addQuestion',{courseid:id,msg:msg},function (json) {
+          if(json.status == true){
+              location.reload();
+          }else{
+              alert(json.msg);
+          }
+      })
+   });
+});
+
 function getQuestion(id) {
     var str = ''
     $.get('/teacher/index/questionJson?id='+id,function (json) {
@@ -16,7 +43,7 @@ function getQuestion(id) {
                     '                                </span>\n' +
                     '                                <br>\n' +
                     '                                <span class="liuyan-text">\n' +
-                    '                                    <p>'+val.msg+'</p>\n' +
+                    '                                    <p><a href="/teacher/index/answer?fatherId='+val.Id+'">'+val.msg+'</a></p>\n' +
                     '                                </span>\n' +
                     '                                <br>\n' +
                     '                                <input type="button" value="回复">\n' +
@@ -42,3 +69,5 @@ function UnixToDate(unixTime, isFull, timeZone) {
     }
     return ymdhis;
 }
+
+

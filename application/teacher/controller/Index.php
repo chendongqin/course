@@ -151,7 +151,7 @@ class Index extends Teacherbase{
     }
 
     public function answer(){
-        $fatherId = $this->request->param('id','','Id');
+        $fatherId = $this->request->param('fatherId','','int');
         $answers = Db::name('message')->where('father_id',$fatherId)->order('create_time','asc')->select();
         foreach ($answers as $key=>$answer){
             $table = $answer['is_teacher']==1?'teachers':'students';
@@ -177,6 +177,24 @@ class Index extends Teacherbase{
         return $this->returnJson('回复成功',true,1);
     }
 
+    public function addQuestion(){
+        $user = $this->getUser();
+        $courseid = $this->request->param('courseid','','int');
+        $msg = $this->request->param('msg','','string');
+        if(empty($msg))
+            return $this->returnJson('回复消息不能为空');
+        $course = Db::name('courses')->where('Id',$courseid )->find();
+        if(empty($course))
+            return $this->returnJson('课程不存在,刷新重试');
+        if($course['teacher_id']!==$user['Id'])
+            return $this->returnJson('你没有权限发言');
+        $add = ['course_id'=>$courseid,'is_teacher'=>1,'user_id'=>$user['Id'],'father_id'=>0,'msg'=>$msg,'create_time'=>time()];
+        $res = Db::name('message')->insert($add);
+        if(!$res)
+            return $this->returnJson('发布失败');
+        return $this->returnJson('发布成功',true,1);
+    }
+
     public function scorelist(){
         $courseId = $this->request->param('courseId','','int');
         $scorelist = Db::table('score')
@@ -196,7 +214,7 @@ class Index extends Teacherbase{
         foreach ($applys['data'] as $key=>$apply){
             $user = Db::name('students')->where('Id',$apply['stu_id'])->find();
             $applys['data'][$key]['stuName'] = $user['name'];
-            $course = Db::name('course')->where('Id',$apply['course_id'])->find();
+            $course = Db::name('courses')->where('Id',$apply['course_id'])->find();
             $applys['data'][$key]['courseName'] = $course['name'];
         }
         $this->assign('pager',$applys);
@@ -268,7 +286,7 @@ class Index extends Teacherbase{
         $taskJobs = Db::name('task_job')
             ->where('course_id',$courseId)
             ->order('create_time')
-            ->select();
+            ->select(); 
         $this->assign('tasks',$taskJobs);
         return $this->fetch();
     }
@@ -297,6 +315,15 @@ class Index extends Teacherbase{
     }
 
     public function chat(){
+       $user = $this->getUser();
+       $stuId = $this->request->param('stuId',0,'int');
+       $stuName = $this->request->param('stuName','','string');
+       $this->assign('stuName',$stuName);
+       $student = Db::name('students')->where('Id',$stuId)->find();
+       $this->assign('stu',$student);
+       if(empty($student))
+           return $this->fetch();
+
         return $this->fetch();
     }
 

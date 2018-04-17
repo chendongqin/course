@@ -115,10 +115,11 @@ main{
 }
 .top_center_left{
     float: left;
-    height: 200px;
+    height: 190px;
     width: 160px;
     border-right: dotted 1px rgb(167, 220, 255);
     text-align: center;
+    overflow: auto;
 }
 .top_center_left h4{
     text-align: left;

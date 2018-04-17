@@ -214,4 +214,23 @@ class Task extends Teacherbase{
         return $this->returnJson('批改失败，请重试');
     }
 
+    //删除作业
+    public function delTaskjob(){
+        $id = $this->request->param('id',0,'int');
+        $job = Db::name('task_job')->where('Id',$id)->find();
+        if(empty($job))
+            return $this->returnJson('作业不存在');
+        Db::startTrans();
+        $res = Db::name('task_job')->delete($id);
+        if(!$res)
+            return $this->returnJson('删除失败，请重试');
+        $taskRes = Db::name('task')->where('task_id',$id)->delete();
+        if(!$res){
+            Db::rollback();
+            return $this->returnJson('删除失败，请重试');
+        }
+        Db::commit();
+        return $this->returnJson('删除成功',true,1);
+    }
+
 }

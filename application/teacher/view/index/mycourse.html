@@ -8,22 +8,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"> {load href="/static/css/s_nav.css"/}
 
     <title>我的课程</title>
-    {load href="/static/css/s_box-title.css"/}
-     {load href="/static/css/html-body-container.css"/} 
-     {load href="/static/css/s_nav.css"/}
-     {load href="/static/css/s_search.css"/}
-     {load href="/static/js/jq.js"/}
-     {load href="/static/js/teacher/index/course_add.js"/}
+    {load href="/static/css/s_box-title.css"/} {load href="/static/css/html-body-container.css"/} {load href="/static/css/s_nav.css"/}
+    {load href="/static/css/s_search.css"/} {load href="/static/js/jq.js"/} {load href="/static/js/teacher/index/course_add.js"/}
 
 
 
 
     <style>
-        hr{
+        hr {
             border: none;
             height: 5px;
             background-color: rgb(167, 220, 255);
         }
+
         main section {
             width: 1150px;
             height: 300px;
@@ -98,15 +95,21 @@
             cursor: pointer;
         }
 
+        #span_two_p_a{
+            color: white;
+
+        }
+
         .span_two p:nth-of-type(2) {
             font-size: 0.7em;
-color: rgb(194, 194, 194);           
+            color: rgb(194, 194, 194);
             width: 65px;
             text-align: center;
 
             float: right;
-       
+
         }
+
         .end-course {
             background-color: rgb(108, 243, 108);
             color: white;
@@ -149,15 +152,35 @@ color: rgb(194, 194, 194);
             text-indent: 2em;
 
         }
+
         /* 弹窗 */
-        form{
-            width:450px;
+
+        .AAbig {
+            width: 1200px;
+            height: 1500px;
+            position: relative;
+            display: none;
+            background-color: rgb(218, 218, 218);
+            opacity: 0.5;
+            position: fixed;
+        }
+
+        form {
+            width: 450px;
             margin: 50px auto;
             display: none;
+            position:absolute;
+            top:100px;
+            left:450px;
+            background-color:white;
+            z-index:999;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
 
         }
-        .top_add{
-            width:100%;
+
+        .top_add {
+            width: 100%;
             height: 40px;
             background-color: rgb(162, 205, 253);
             color: white;
@@ -166,83 +189,125 @@ color: rgb(194, 194, 194);
             line-height: 40px;
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
-            
+
         }
-        .add_inp{
+
+        .add_inp {
             border: solid 1px rgb(214, 214, 214);
             border-top: none;
-            width:408px ;
+            width: 450px;
             padding: 20px;
             height: 500px;
 
         }
-        form label{
+
+        form label {
             display: inline-block;
             width: 150px;
             height: 30px;
             line-height: 30px;
             text-align: center;
         }
-        form input{
+
+        form input {
             width: 200px;
             height: 20px;
         }
-        form textarea{
+
+        form textarea {
             width: 196px;
             height: 150px;
             vertical-align: top;
         }
-        #addCourse{
+
+        #addCourse {
             width: 50px;
             float: right;
             margin: 20px 55px;
         }
-        #cancle_addCourse{
+
+        #cancle_addCourse {
             width: 50px;
             float: right;
             margin: 20px 55px;
         }
+        #courseImg{
+            display: block;
+            width: 200px;
+            margin: 0;
+            margin-left: 157px;
+            height: 100px;
+        }
+      
     </style>
 
 </head>
 
 <body>
     <div class="container">
+        <div class="AAbig" style="z-index:1;"></div>
+        <form id="creat_course" action="/teacher/index/addcourse" method="post" enctype="multipart/form-data">
+            <div class="top_add">
+                <b>创建新课程</b>
+            </div>
+
+            <div class="add_inp">
+                <label>课程名字</label>
+                <input type="text" name="name" id="name" required>
+                <br>
+                <label>课程图片</label>
+                <input type="file" name="courseImage" id="courseImage" required>
+                <br>
+                <img src="" width="100" id="courseImg">
+                <br>
+                <input type="hidden" name="image" id="image" required>
+                <label>学分</label>
+                <input type="text" name="credit" id="credit" required>
+                <br>
+                <label>开始时间</label>
+                <input type="text" name="start_time" id="start_time" required>
+                <br>
+                <label>结束时间</label>
+                <input type="text" name="end_time" id="end_time" required>
+                <br>
+                <label>课程描述</label>
+                <textarea name="describe" id="describe" required></textarea>
+                <br>
+                <input type="submit" value="创建" id="addCourse">
+                <input type="button" value="取消" id="cancle_addCourse">
+
+
+            </div>
+        </form>
+
+
         <header>
             <nav>
                 <span class="nav_bth nav_bth_first">
                     <img src="/static/image/logo.jpg" alt="logo">
                 </span>
-                <span class="nav_bth"><a href="/">首页</a></span>
-                <span class="nav_bth"><a href="/teacher/index/mycourse">我的课程</a></span>
-                <span class="nav_bth"><a href="/teacher/index/applylist">课程申请</a></span>
-                <span class="nav_bth"><a href="/teacher/index/changepwd">修改密码</a></span>
+                <span class="nav_bth">
+                    <a href="/">首页</a>
+                </span>
+                <span class="nav_bth">
+                    <a href="/teacher/index/mycourse">我的课程</a>
+                </span>
+                <span class="nav_bth">
+                    <a href="/teacher/index/applylist">课程申请</a>
+                </span>
+                <span class="nav_bth">
+                            <a href="/teacher/index/chat">聊天信息</a>
+                        </span>
+                <span class="nav_bth">
+                    <a href="/teacher/index/changepwd">修改密码</a>
+                </span>
                 <a class="nav_bth" href="/index/index/logout?channel=teacher">登出</a>
             </nav>
 
         </header>
 
         <main>
-                <input type="button" class="issue" id = 'issue_course' value="发布课程">
-                <form id="creat_course" action="/teacher/index/addcourse" method="post" enctype="multipart/form-data">
-                        <div class="top_add"><b>创建新课程</b></div>
-                
-                        <div class="add_inp">
-                        <label>课程名字</label><input type="text" name="name" id="name" required><br>
-                        <label >课程图片</label><input type="file" name="courseImage"  id="courseImage"  required><br><img src="" width="100" id="courseImg"><br>
-                        <input type="hidden" name="image" id="image"  required>
-                        <label>学分</label><input type="text" name="credit" id="credit"  required><br>
-                        <label>开始时间</label><input type="text" name="start_time" id="start_time"  required><br>
-                        <label>结束时间</label><input type="text" name="end_time" id="end_time" required><br>
-                        <label>课程描述</label><textarea name="describe" id="describe" required></textarea><br>
-                        <input type="submit" value="创建" id="addCourse">
-                        <input type="button" value="取消" id="cancle_addCourse">
-                        
-                        
-                    </div>
-                    </form>
-            {if condition="!empty($pager['data'])"}
-            {volist name="pager.data" id="data"}
+            <input type="button" class="issue" id='issue_course' value="发布课程"> {if condition="!empty($pager['data'])"} {volist name="pager.data" id="data"}
             <section>
                 <div class="sec_left">
                     <li class="course">
@@ -255,8 +320,10 @@ color: rgb(194, 194, 194);
                                 <p>{$teacher.name}</p>
                             </span>
                             <span class="span_two">
-                                <p><a href="/teacher/index/coursedetail?id={$data.Id}" id="span_two_p_a">查看课程</a></p>
-                                <p>推荐指数：5</p>
+                                <p>
+                                    <a href="/teacher/index/coursedetail?id={$data.Id}" id="span_two_p_a">查看课程</a>
+                                </p>
+                                <p>推荐指数:5</p>
                             </span>
                         </div>
                     </li>
@@ -264,33 +331,51 @@ color: rgb(194, 194, 194);
 
                 <div class="sec_right">
 
-                    <div class="sec_right_text"><h3>课程名称：{$data.name}</h3></div>
-                    <div class="sec_right_text"><h4>任教老师：{$teacher.name}</h4> <p>联系方式：{$teacher.email}</p></div>
-                    <div class="sec_right_text"><p>开课时间：{php}echo date('Y-m-d',$data['start_time']);{/php}</p><p>结束时间：{php}echo date('Y-m-d',$data['end_time']);{/php}</p></div>
-                    <div class="sec_right_text"><h4>课程简介：</h4></div>
-                    <div class="sec_right_text  sec_right_text_p"><p>{$data.describe}</p></div>
+                    <div class="sec_right_text">
+                        <h3>课程名称：{$data.name}</h3>
+                    </div>
+                    <div class="sec_right_text">
+                        <h4>任教老师：{$teacher.name}</h4>
+                        <p>联系方式：{$teacher.email}</p>
+                    </div>
+                    <div class="sec_right_text">
+                        <p>开课时间：{php}echo date('Y-m-d',$data['start_time']);{/php}</p>
+                        <p>结束时间：{php}echo date('Y-m-d',$data['end_time']);{/php}</p>
+                    </div>
+                    <div class="sec_right_text">
+                        <h4>课程简介：</h4>
+                    </div>
+                    <div class="sec_right_text  sec_right_text_p">
+                        <p>{$data.describe}</p>
+                    </div>
                 </div>
             </section>
-            {/volist}
-            {else}
-            <p><a href="/teacher/index/courseadd">添加课程</a></p>
+            {/volist} {else}
+            <p>
+                <a href="/teacher/index/courseadd">添加课程</a>
+            </p>
             {/if}
         </main>
     </div>
     <script>
-            var creat_course = document.getElementById('creat_course');
-            // console.log(creat_course)
-            var issue_course = document.getElementById('issue_course');
-            // console.log(issue_course)
-            var cancle_addCourse= document.getElementById('cancle_addCourse')
-            // console.log(cancle_addCourse)
-            issue_course.onclick = function () {
-                creat_course.style.display = 'block';
-            }
-            cancle_addCourse.onclick = function () {
-                creat_course.style.display = 'none';
-            }
-        </script>
+        var creat_course = document.getElementById('creat_course');
+        // console.log(creat_course)
+        var issue_course = document.getElementById('issue_course');
+        // console.log(issue_course)
+        var cancle_addCourse = document.getElementById('cancle_addCourse')
+        // console.log(cancle_addCourse)
+        var AAbig = document.querySelector('.AAbig')
+        issue_course.onclick = function () {
+            AAbig.style.display = 'block';
+
+            creat_course.style.display = 'block';
+        }
+        cancle_addCourse.onclick = function () {
+            AAbig.style.display = 'none';
+
+            creat_course.style.display = 'none';
+        }
+    </script>
 </body>
 
 </html>

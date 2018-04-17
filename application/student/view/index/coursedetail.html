@@ -14,7 +14,6 @@
         .sec {
             overflow: auto;
             position: relative;
-
         }
 
         p,
@@ -93,8 +92,8 @@
             width: 100%;
             height: 140px;
             padding: 10px 0px;
-            border-bottom: 2px dotted rgb(167, 220, 255);
-            border-top: 2px dotted rgb(167, 220, 255);
+            /* border-bottom: 2px dotted rgb(167, 220, 255); */
+            border-top: 1px dotted rgb(167, 220, 255);
 
         }
 
@@ -108,10 +107,13 @@
         }
 
         .homework-text {
-            width: 70%;
-            height: 50px;
+            width: 100%;
+            height: 70px;
             border: solid 1px rgb(201, 201, 201);
             margin: 5px 0;
+            padding: 10px;
+            font-size: 15px;
+
 
         }
 
@@ -123,10 +125,20 @@
         .score {
             height: 20px;
             margin: 5px 0;
+            font-size: 15px;
         }
 
         .score p {
             margin-right: 50px;
+        }
+        .homework_title_text,.homework_detail_text{
+            font-size: 13px;
+        }
+        .update_time{
+            float: right;
+            margin-right: 5px;
+            color: rgb(175, 175, 175);
+
         }
 
 
@@ -324,12 +336,17 @@
                 {volist name="tasks" id="task"}
                 <div class="everywork">
                     <span class="work-circle"></span>
-                    <h4>作业：</h4>
+                    <h4>作业1</h4>
                     <div class="homework-text">
+                        <p class="homework_title"><b>标题:</b></p><span class="homework_title_text">{$task.name}</span>
+                        <p class="update_time" style="font-size:12px;">2018-03-06</p><br>
+                        <p class="homework_detail"><b>描述:</b></p><span class="homework_detail_text">{$task.describe}</span>
+                    </div>
+                    <!-- <div class="homework-text">
                         <p class="homework-text-p">{$task.name}</p>
                         <p>{php}echo empty($task['thumb'])?'':'<a href="/student/task/down?id='.$task['Id'].'">下载</a>';{/php}</p>
                         <p>{php}echo empty($task['thumb'])?'':'<a href="/student/task/see?id='.$task['Id'].'" target="_blank" >查看</a>';{/php}</p>
-                    </div>
+                    </div> -->
                     {if condition="empty($task['task'])"}
                     <form method="post" action="/student/task/add?task_id={$task.Id}" enctype="multipart/form-data">
                         <input type="file" name="taskFile">
