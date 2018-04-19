@@ -363,7 +363,19 @@ class Index extends Studentbase{
     }
 
     public function chat(){
+        $name = $this->request->param('name','','string');
+        $this->assign('name',$name);
+        $user = $this->getUser();
+        $teacherId = $this->request->param('teacherId',0,'int');
+        $teacher = Db::name('teachers')->where('Id',$teacherId)->find();
+        $this->assign('teacher',$teacher);
+//        if(empty($teacher))
+//            return $this->fetch();
         return $this->fetch();
     }
 
+    public function sschat(){
+
+        return $this->fetch();
+    }
 }

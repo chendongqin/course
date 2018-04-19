@@ -136,7 +136,8 @@ class Chat extends Studentbase{
         if(!empty($name))
             $where['name'] = ['like','%'.$name.'%'];
         $courseIds = Db::name('course_students')->where('stu_id',$user['Id'])->column('course_id');
-        $teachers =  Db::name('courses')->where('teacher_id','in',$courseIds)->select();
+        $teacherIds =  Db::name('courses')->where('Id','in',$courseIds)->column('teacher_id');
+        $teachers = Db::name('teachers')->where('Id','in',$teacherIds)->select();
         return $this->returnJson('获取成功',true,1,$teachers);
     }
 

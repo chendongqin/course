@@ -321,8 +321,8 @@ class Index extends Teacherbase{
        $this->assign('stuName',$stuName);
        $student = Db::name('students')->where('Id',$stuId)->find();
        $this->assign('stu',$student);
-       if(empty($student))
-           return $this->fetch();
+//       if(empty($student))
+//           return $this->fetch();
 
         return $this->fetch();
     }

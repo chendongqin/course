@@ -6,14 +6,14 @@ $(function () {
  setInterval(function working(){
      var teacher_id = $('#teacher_id').val();
      if(teacher_id !=0){
-         $.get('/student/chat?stuId='+stu_id,function (json) {
+         $.get('/student/chat?tId='+teacher_id,function (json) {
              var chatStr = '';
              $('.chat-box-right-top').empty();
              $.each(json.data,function (i,val) {
                  if(val.sender ==0)
-                    chatStr =chatStr + '<div class="p_chat_left"><img src="/static/image/stu.jpg" alt="" id="img_left"><span id="text_left">'+val.msg+'</span></div>';
+                    chatStr =chatStr + '<div class="p_chat_right"><span id="text_right">'+val.msg+'</span><img src="/static/image/stu.jpg" alt="" id="img_left"></div>';
                  else
-                     chatStr =chatStr + '<div class="p_chat_right"><span id="text_right">'+val.msg+'</span><img src="/static/image/teacher.jpg" alt="" id="img_right"></div>';
+                     chatStr =chatStr +'<div class="p_chat_left"><img src="/static/image/teacher.jpg" alt="" id="img_right"><span id="text_left">' +val.msg+'</span></div>';
              });
              $('.chat-box-right-top').append(chatStr);
          });
@@ -22,14 +22,14 @@ $(function () {
 
 $(function(){
    $('#btn_search').click(function () {
-       var stuName = $('#input_search').val();
-       searchStu(stuName);
+       var name = $('#input_search').val();
+       searchStu(name);
    });
    $('#chat_sent').click(function () {
        var msg= $('#text_sent').val();
-       var stu_id = $('#stu_id').val();
-       var data = {msg:msg,id:stu_id};
-       $.post('/teacher/chat/add',data,function (json) {
+       var teacher_id = $('#teacher_id').val();
+       var data = {msg:msg,id:teacher_id};
+       $.post('/student/chat/addst',data,function (json) {
           if(json.status == false)
               alert(json.msg);
           else
@@ -38,12 +38,12 @@ $(function(){
    });
 });
 
-function searchStu(stuName) {
+function searchStu(name) {
     $('.chat_list').empty();
     var str = '';
-    $.post('/teacher/chat/chatStu',{stuName:stuName},function (json) {
+    $.post('/student/chat/chatTeacher',{name:name},function (json) {
         $.each(json.data,function (i,val) {
-            str = str + '<a href="/teacher/index/chat?stuName='+stuName+'&stuId='+val.Id+'">'+val.name+'</a>';
+            str = str + '<a href="/student/index/chat?name='+name+'&teacherId='+val.Id+'">'+val.name+'</a>';
         });
         $('.chat_list').append(str);
     });
