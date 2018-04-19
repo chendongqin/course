@@ -1,12 +1,12 @@
 
 $(function () {
-    var stuName = $('#input_search').val();
-    searchStu(stuName);
+    var name = $('#input_search').val();
+    searchStu(name);
 });
  setInterval(function working(){
-     var stu_id = $('#stu_id').val();
-     if(stu_id !=0){
-         $.get('/teacher/chat?stuId='+stu_id,function (json) {
+     var teacher_id = $('#teacher_id').val();
+     if(teacher_id !=0){
+         $.get('/student/chat?stuId='+stu_id,function (json) {
              var chatStr = '';
              $('.chat-box-right-top').empty();
              $.each(json.data,function (i,val) {

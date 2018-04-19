@@ -15,7 +15,7 @@
             margin: 20px auto;
             width: 700px;
             height: 500px;
-            padding-bottom: 30px;       
+            padding-bottom: 30px;
         }
         .chat-title{
             display: inline-block;
@@ -32,7 +32,7 @@
             height: 460px;
             display: flex;
             justify-content: space-between;
-            border: solid 1px rgb(113, 209, 253);
+            border: solid 3px rgb(113, 209, 253);
         }
         .chat-box-left{
             overflow: auto;
@@ -55,22 +55,30 @@
             text-align: center;
         }
         .chat-box-right-top{
-           height: 350px;
-           width: 100%;
+            height: 350px;
+            width: 100%;
+            padding: 10px;
+            overflow:scroll;
         }
         .chat-box-right-bottom{
             width: 100%;
-            border-top: 2px solid rgb(113, 209, 253);
-           height: 110px;
-           padding: 10px;
-           position: relative;
+            border-top: 3px solid rgb(113, 209, 253);
+            height: 110px;
+            padding: 10px;
+            position: relative;
+
+        }
+        #text_sent{
+            width:420px;
+            height: 80px;
+            border: none;
 
         }
         #chat_sent{
             width: 40px;
             height: 22px;
             border-radius: 5px;
-            background-color: rgb(33, 161, 247);
+            background-color: rgb(113, 209, 253);
             color: aliceblue;
             text-align: center;
             border: none;
@@ -95,6 +103,52 @@
             color: rgb(0, 0, 0);
             display: inline-block;
         }
+        /* 聊天 */
+        /* 左边 */
+        .p_chat_left{
+            margin-bottom: 10px;
+            width: 90%;
+            float: left;
+        }
+        #img_left{
+            width: 40px;
+            height: 40px;
+
+        }
+        #text_left{
+            display: inline-block;
+            width: 365px;
+            min-height: 50px;
+            border: solid 1px rgb(113, 209, 253);
+            vertical-align: top;
+            padding: 10px 0;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+        /* 右边 */
+        .p_chat_right
+        {
+            margin-bottom: 10px;
+            width: 88%;
+            float: right;
+        }
+        #text_right{
+            display: inline-block;
+            width: 365px;
+            min-height: 50px;
+            border: solid 1px rgb(113, 209, 253);
+            vertical-align: top;
+            padding: 10px 0;
+            border-radius: 20px;
+            font-size: 13px;
+            /* float: right; */
+        }
+        #img_right{
+            width: 40px;
+            height: 40px;
+            /* float: right;  */
+        }
+
 
 
 
@@ -115,7 +169,7 @@
                             <a href="/teacher/index/mycourse">我的课程</a>
                         </span>
                         <span class="nav_bth">
-                            <a href="/teacher/index/apply">课程申请</a>
+                            <a href="/teacher/index/applylist">课程申请</a>
                         </span>
                         <span class="nav_bth">
                             <a href="/teacher/index/chat">聊天信息</a>
@@ -151,10 +205,12 @@
                                       <div class="chat-box-right-top">
 
                                           </div>
-                                        
-                                      <div class="chat-box-right-bottom">
-                                          <input type="botton" id="chat_sent" value="发送">
-                                      </div>
+
+                                        <div class="chat-box-right-bottom">
+                                            <input type="text" id="text_sent" >
+
+                                            <input type="button" id="chat_sent" value="发送">
+                                        </div>
                                     </div>
                                     
                                 </section>
