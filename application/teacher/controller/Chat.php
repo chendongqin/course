@@ -28,8 +28,9 @@ class Chat extends Teacherbase{
     }
 
     public function all(){
+        $user = $this->getUser();
         $sid = $this->request->param('stuId','','int');
-        $tid = $this->request->param('tId','','int');
+        $tid = $user['Id'];
         $where = ['s_id'=>$sid,'t_id'=>$tid];
         $chats = Db::name('st_chat')->where($where)->order('time','asc')->select();
         return $this->returnJson('获取成功',true,1,$chats);
@@ -54,8 +55,9 @@ class Chat extends Teacherbase{
 
     //未读信息数量
     public function dingNum(){
+        $sId = $this->request->param('sid',0,'int');
         $user = $this->getUser();
-        $where = ['t_id'=>$user['Id'],'sender'=>0,'is_see'=>0];
+        $where = ['t_id'=>$user['Id'],'s_id'=>$sId,'sender'=>0,'is_see'=>0];
         $num = Db::name('st_chat')->where($where)->count();
         return $this->returnJson('获取成功',true,1,['num'=>$num]);
     }

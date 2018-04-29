@@ -5,9 +5,18 @@ $(function () {
 });
  setInterval(function working(){
      var teacher_id = $('#teacher_id').val();
+     var url = '';
+     var tmpStr = '';
+     var more = $('#chat_more').val();
+     if(more == 0){
+         url = '/student/chat?tId='+teacher_id;
+         tmpStr =  '<a href="javascript:;" id="click">加载更多</a>';
+     }
+     else
+         url = '/student/chat/all?tId='+teacher_id;
      if(teacher_id !=0){
-         $.get('/student/chat?tId='+teacher_id,function (json) {
-             var chatStr = '';
+         $.get(url,function (json) {
+             var chatStr = tmpStr;
              $('.chat-box-right-top').empty();
              $.each(json.data,function (i,val) {
                  if(val.sender ==0)
@@ -25,6 +34,9 @@ $(function(){
        var name = $('#input_search').val();
        searchStu(name);
    });
+    $('.chat-box-right-top').on('click',"#click",function () {
+        $('#chat_more').val(1);
+    });
    $('#chat_sent').click(function () {
        var msg= $('#text_sent').val();
        var teacher_id = $('#teacher_id').val();
@@ -40,12 +52,20 @@ $(function(){
 
 function searchStu(name) {
     $('.chat_list').empty();
-    var str = '';
     $.post('/student/chat/chatTeacher',{name:name},function (json) {
+        var str = '';
         $.each(json.data,function (i,val) {
-            str = str + '<a href="/student/index/chat?name='+name+'&teacherId='+val.Id+'">'+val.name+'</a>';
+            str = str + '<div ><a href="/student/index/chat?name='+name+'&teacherId='+val.Id+'">'+val.name;
+            $.post('/student/chat/stdingNum',{tid:+val.Id},function (data) {
+                var num = data.data.num;
+                if(num ==0)
+                    str = str+'</a></div>';
+                else
+                    str = str+'<span style="color: red"> '+num+'</span></a></div>';
+                $('.chat_list').append(str);
+            });
         });
-        $('.chat_list').append(str);
+
     });
 
 }

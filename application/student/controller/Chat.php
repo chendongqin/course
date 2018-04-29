@@ -94,13 +94,18 @@ class Chat extends Studentbase{
         return $this->returnJson('发送成功',true,1);
     }
 
-    public function dingNum(){
+    public function stdingNum(){
         $user = $this->getUser();
-        $where = ['s_id'=>$user['Id'],'sender'=>1,'is_see'=>0];
-        $num1 = Db::name('st_chat')->where($where)->count();
-        $where = ['to_id'=>$user['Id'],'is_see'=>0];
-        $num2 = Db::name('ss_chat')->where($where)->count();
-        $num = $num1+$num2;
+        $tid = $this->request->param('tid',0,'int');
+        $where = ['s_id'=>$user['Id'],'t_id'=>$tid,'sender'=>1,'is_see'=>0];
+        $num = Db::name('st_chat')->where($where)->count();
+        return $this->returnJson('获取成功',true,1,['num'=>$num]);
+    }
+    public function ssdingNum(){
+        $user = $this->getUser();
+        $sid = $this->request->param('sid',0,'int');
+        $where = ['to_id'=>$user['Id'],'form_id'=>$sid,'is_see'=>0];
+        $num = Db::name('ss_chat')->where($where)->count();
         return $this->returnJson('获取成功',true,1,['num'=>$num]);
     }
     public function ding(){

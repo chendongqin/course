@@ -310,6 +310,13 @@ class Index extends Teacherbase{
             $table = $data['is_teacher']==1?'teachers':'students';
             $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
             $question[$key]['user_name'] = $userName;
+            $anwers = $messageModel->where('father_id',$data['Id'])->select();
+            foreach ($anwers as $k=>$anwer){
+                $table = $anwer['is_teacher']==1?'teachers':'students';
+                $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
+                $anwers[$k]['user_name'] = $userName;
+            }
+            $question[$key]['anwers'] = $anwers;
         }
         return $this->returnJson('获取成功',true,1,$question);
     }
@@ -321,9 +328,10 @@ class Index extends Teacherbase{
        $this->assign('stuName',$stuName);
        $student = Db::name('students')->where('Id',$stuId)->find();
        $this->assign('stu',$student);
-//       if(empty($student))
-//           return $this->fetch();
-
+       if(empty($student))
+           return $this->fetch();
+        $where = ['t_id'=>$user['Id'],'s_id'=>$stuId,'sender'=>0,'is_see'=>0];
+        Db::name('st_chat')->where($where)->update(['is_see'=>1]);
         return $this->fetch();
     }
 

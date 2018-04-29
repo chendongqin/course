@@ -13,14 +13,15 @@ class Teacherbase extends Base{
     private $_user = [];
 
     protected function _initialize() {
-        $session = new Session();
-        $teacher = $session->get('teacher_user');
+        $teacher = Session::pull('teacher_user');
         if(empty($teacher)){
             $this->redirect('/');
 //            $this->error('请先登陆','/');
         }
         $this->setUser($teacher[0]);
         $this->assign('teacher',$teacher[0]);
+        $this->setUser($teacher[0]);
+        Session::push('teacher_user',$teacher[0]);
     }
 
     public function setUser($user){

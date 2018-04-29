@@ -222,6 +222,64 @@
         .sentmessage input {
             float: right;
         }
+        /* 回复 */
+        .recall{
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+        }
+        .input_liuyan{
+            width: 98%;
+            /* border: solid 1px gold; */
+            height: 25px;
+            line-height: 25px;
+            margin: 5px;
+
+
+        }
+        .input_liuyan input[type=text]{
+            width: 90%;
+            height: 25px;
+            line-height: 25px;
+            float: left;
+
+
+        }
+        /* .input_liuyan input[type=button]{
+        } */
+        /* 回复显示 */
+        .recall_text{
+            width: 100%;
+            /* border: solid 1px gold; */
+            padding: 5px 20px;
+            position: relative;
+            border-top: solid 1px rgb(167, 220, 255);
+
+        }
+        .comefrom{
+            font-size: 12px;
+            display: inline-block;
+            margin: 5px;
+            color: rgb(167, 220, 255);
+        }
+        .name{
+            margin: 5px;
+        }
+        .text_liuyan{
+            display: inline-block;
+            width: 550px;
+            min-height: 18px;
+            word-wrap: break-word;
+            vertical-align: top;
+            font-size: 14px;
+            margin: 5px;
+        }
+        .recall_time{
+            margin: 5px;
+            font-size: 12px;
+            color: rgb(180, 179, 179);
+        }
+
     </style>
 
 </head>
@@ -378,15 +436,15 @@
                 <div>
                     <div class="message">
                         <div class="message-left">
-                            <input type="text" id="questionText" placeholder="请输入你要搜索的关键字">
-                            <input type="button" id="questionSearch" value="搜索">
+                            <!--<input type="text" id="questionText" placeholder="请输入你要搜索的关键字">-->
+                            <!--<input type="button" id="questionSearch" value="搜索">-->
                             <div id="question">
 
                             </div>
                         </div>
                         <div class="message-right">
-                            <textarea name="" id="" cols="30" rows="10" placeholder="请输入你的问题"></textarea>
-                            <input type="button" value="提交">
+                            <textarea name="" id="pushString" cols="30" rows="10" placeholder="请输入你的问题"></textarea>
+                            <input type="button" id="pushQuestion" value="提交">
 
 
                         </div>

@@ -58,7 +58,8 @@
            height: 350px;
            width: 100%;
            padding: 10px;
-            overflow:scroll;
+            overflow:auto;
+            position: relative;
         }
         .chat-box-right-bottom{
             width: 100%;
@@ -108,53 +109,88 @@
         }
 
 
+      /* 聊天 */
+          /* 加载更多 */
+          #click{
+            width: 100%;
+            height: 20px;
+            line-height: 20px;
+            color:  rgb(113, 209, 253);
+            text-align: center;
+            display: block;
+            font-size: 10px;
+            position: absolute;
+            top: 0;
 
-          /* 聊天 */
-        /* 左边 */
-        .p_chat_left{
-            margin-bottom: 10px;
-            width: 90%;
-            float: left;
         }
-        #img_left{
-            width: 40px;
-            height: 40px;
+                /* 左边 */
+      .p_chat_left{
+          margin-bottom: 10px;
+          width: 90%;
+          float: left;
+      }
+      #img_left{
+          width: 40px;
+          height: 40px;
 
-        }
-        #text_left{
-            display: inline-block;
-            width: 365px;
-            min-height: 50px;
-            border: solid 1px rgb(113, 209, 253);
-            vertical-align: top;
-            padding: 10px 0;
-            border-radius: 20px;
-            font-size: 13px;
-        }
-        /* 右边 */
-        .p_chat_right
-        {
-            margin-bottom: 10px;
-            width: 88%;
-            float: right;
-        }
-        #text_right{
-            display: inline-block;
-            width: 365px;
-            min-height: 50px;
-            border: solid 1px rgb(113, 209, 253);
-            vertical-align: top;
-            padding: 10px 0;
-            border-radius: 20px;
-            font-size: 13px;
-            /* float: right; */
-        }
-        #img_right{
-            width: 40px;
-            height: 40px;
-            /* float: right;  */
-        }
-      
+      }
+      #text_left{
+       
+         margin-left: 10px;
+          background-color:  rgb(183, 230, 251);
+          display: inline-block;
+          max-width: 350px;
+          min-height: 30px;
+          /* border: solid 1px rgb(113, 209, 253); */
+          vertical-align: top;
+          padding: 10px 5px;
+          border-radius: 7px;
+          font-size: 13px;
+          /* color: white; */
+      }
+      /* 右边 */
+      .p_chat_right
+      {
+          margin-bottom: 10px;
+          /* width: 90%; */
+          float: right;
+      }
+      #text_right{
+
+          display: inline-block;
+          max-width: 355px;
+          min-height: 30px;
+          /* background-color: #b0ec7f; */
+          color: white;
+          border: solid 1px rgb(183, 230, 251);
+          vertical-align: top;
+          padding: 10px 5px;
+          border-radius: 7px;
+          font-size: 13px;
+          color: black;
+          
+      }
+      #img_right{
+          width: 40px;
+          height: 40px;
+          margin-left: 10px;
+          /* float: right;  */
+         
+      }
+      .p_chat_right{
+           text-align: right;
+           width: 450px;
+       }
+       #text_right{
+          text-align: left;
+          word-wrap: break-word;
+       }
+       #text_left{
+          text-align: left;
+          word-wrap: break-word;
+       }
+
+
 
 
 
@@ -187,6 +223,7 @@
         
                 </header>
             <input type="hidden" value="{php}echo empty($teacher)?0:$teacher['Id'];{/php}" id="teacher_id">
+            <input type="hidden" value="0" id="chat_more">
                         <main>
                             <div class="chat-box">
                                 {if condition="!empty($teacher)"}
@@ -208,7 +245,7 @@
                                     </div>
                                     <div class="chat-box-right">
                                       <div class="chat-box-right-top">
-                        
+                                          <a href="" id="click">加载更多</a>
                                           </div>
                                         
                                       <div class="chat-box-right-bottom">

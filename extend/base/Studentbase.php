@@ -12,13 +12,14 @@ class Studentbase extends Base {
 
     private $_user = [];
     protected function _initialize() {
-        $session = new Session();
-        $student = $session->get('student_user');
+        $student = Session::pull('student_user');
         if(empty($student)){
             $this->redirect('/');
         }
         $this->setUser($student[0]);
         $this->assign('student',$student[0]);
+        $this->setUser($student[0]);
+        Session::push('student_user',$student[0]);
     }
     public function setUser($user){
         $this->_user = (array)$user;

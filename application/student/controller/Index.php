@@ -228,13 +228,20 @@ class Index extends Studentbase{
             $table = $data['is_teacher']==1?'teachers':'students';
             $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
             $question[$key]['user_name'] = $userName;
+            $anwers = $messageModel->where('father_id',$data['Id'])->select();
+            foreach ($anwers as $k=>$anwer){
+                $table = $anwer['is_teacher']==1?'teachers':'students';
+                $userName = Db::name($table)->where('Id',$data['user_id'])->column('name');
+                $anwers[$k]['user_name'] = $userName;
+            }
+            $question[$key]['anwers'] = $anwers;
         }
         return $this->returnJson('获取成功',true,1,$question);
     }
 
     public function addquestion(){
-        $courseId = $this->request->param('courseId','','int');
-        $course = Db::name('courses')->find('Id',$courseId)->find();
+        $courseId = $this->request->param('courseid','','int');
+        $course = Db::name('courses')->where('Id',$courseId)->find();
         if(empty($course))
             return $this->returnJson('课程不存在');
         $user = $this->getUser();
@@ -274,7 +281,7 @@ class Index extends Studentbase{
         $message = Db::name('message')->where('Id',$fatherId)->find();
         if(empty($message))
             return $this->returnJson('消息不存在,刷新重试');
-        $course = Db::name('courses')->find('Id',$message['course_id'])->find();
+        $course = Db::name('courses')->where('Id',$message['course_id'])->find();
         if(empty($course))
             return $this->returnJson('课程不存在');
         $courseStudent = Db::name('course_students')->where(['stu_id'=>$user['Id'],'course_id'=>$course['Id']])->find();
@@ -369,8 +376,10 @@ class Index extends Studentbase{
         $teacherId = $this->request->param('teacherId',0,'int');
         $teacher = Db::name('teachers')->where('Id',$teacherId)->find();
         $this->assign('teacher',$teacher);
-//        if(empty($teacher))
-//            return $this->fetch();
+        if(empty($teacher))
+            return $this->fetch();
+        $where = ['s_id'=>$user['Id'],'t_id'=>$teacherId,'sender'=>1,'is_see'=>0];
+        Db::name('st_chat')->where($where)->update(['is_see'=>1]);
         return $this->fetch();
     }
 
